@@ -1,7 +1,6 @@
 package Backend.DB.DAO.Usuario;
 
 import Backend.DB.DBConnection;
-import Backend.DB.Domain.Usuario.Area;
 import Backend.DB.DAO.SQL_SENTENCES;
 import Backend.Utils.CustomException;
 
@@ -18,10 +17,10 @@ public class AreaDAO {
      * @return el resultado, 1 si hubo exito
      * @throws Exception en caso no se complete la operación
      */
-    public int insert(Area area) throws Exception {
+    public int insert(String area) throws Exception {
         // Intenta actualizar la BD, si hay error, devuelve una excepcon
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.INSERT_AREA.getSentence())) {
-            ps.setString(1, area.getArea());
+            ps.setString(1, area);
             return ps.executeUpdate();
         } catch (Exception e) {
             throw new CustomException(e.getMessage(), this.getClass());
@@ -32,9 +31,9 @@ public class AreaDAO {
      * Selecciona todos los elementos de la tabla
      * @return listado de todas las areas
      */
-    public ArrayList<Area> select() throws CustomException {
+    public ArrayList<String> select() throws CustomException {
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.SELECT_AREA_ALL.getSentence())) {
-            ArrayList<Area> data = new ArrayList<>();
+            ArrayList<String> data = new ArrayList<>();
             // como no hay ? en el SQL, ejecutamos ResulSet, de lo contrario deberiamos usar ps.Set...
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -56,7 +55,7 @@ public class AreaDAO {
     }
 
     // obtenemos los datos de la base de datos y lo convertimos en objeto
-    private Area getAreaFromRs(ResultSet rs) throws SQLException {
-        return new Area(rs.getString("area"));
+    private String getAreaFromRs(ResultSet rs) throws SQLException {
+        return rs.getString("area");
     }
 }
