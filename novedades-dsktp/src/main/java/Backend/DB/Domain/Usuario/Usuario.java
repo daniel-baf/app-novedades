@@ -19,6 +19,10 @@ public class Usuario {
         this(null, null, null, null, false);
     }
 
+    public Usuario(String usuario, String password, boolean encrypt) {
+        this(usuario, null, password, null, encrypt);
+    }
+
     /**
      * Este constructor sirve para crear un usuario a nivel BD, nota, al crear un objeto
      * La contraseña deberá ser texto plano, el constructor se encargará de encriptarla
