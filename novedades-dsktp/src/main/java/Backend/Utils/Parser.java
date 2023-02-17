@@ -46,4 +46,5 @@ public class Parser {
     public LocalDate toLocalDate(String dateString) {
         return LocalDate.parse(dateString);
     }
+
 }
