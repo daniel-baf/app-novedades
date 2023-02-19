@@ -1,229 +1,415 @@
--- APP DB
+-- MySQL Workbench Forward Engineering
 
-DROP SCHEMA IF EXISTS `novedades`;
-CREATE SCHEMA `novedades`;
-USE `novedades`;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- GASTOS
+-- -----------------------------------------------------
+-- Schema novedades
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `novedades` ;
 
-CREATE TABLE `novedades`.`Categoria_Gasto` (
-  `nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`nombre`));
+-- -----------------------------------------------------
+-- Schema novedades
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `novedades` ;
+USE `novedades` ;
 
-CREATE TABLE `novedades`.`Gasto` (
+-- -----------------------------------------------------
+-- Table `novedades`.`Categoria_Gasto`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Categoria_Gasto` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Categoria_Gasto` (
+  `gasto` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`gasto`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Gasto`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Gasto` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Gasto` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
-  `total` DECIMAL(7,2) NOT NULL COMMENT 'Venta maxima de 99,999.99',
-  `descripcion` VARCHAR(70) NULL COMMENT 'Si se desea tener una descripción detallada del gasto',
-  `categoria` VARCHAR(45) NOT NULL COMMENT 'Categoria del tipo de gasto, ej: Pagos, remodelaciones...',
+  `total` DOUBLE NOT NULL,
+  `descripcion` VARCHAR(100) NULL,
+  `categoria_gasto` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_gasto_categoria_idx` (`categoria` ASC) VISIBLE,
-  CONSTRAINT `fk_gasto_categoria`
-    FOREIGN KEY (`categoria`)
-    REFERENCES `novedades`.`Categoria_Gasto` (`nombre`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  INDEX `fk_Gasto_Categoria_Gasto_idx` (`categoria_gasto` ASC) VISIBLE,
+  CONSTRAINT `fk_Gasto_Categoria_Gasto`
+    FOREIGN KEY (`categoria_gasto`)
+    REFERENCES `novedades`.`Categoria_Gasto` (`gasto`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- USUARIOS
 
-CREATE TABLE `novedades`.`Area` (
-  `area` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`area`));
+-- -----------------------------------------------------
+-- Table `novedades`.`Area`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Area` ;
 
-CREATE TABLE `novedades`.`Usuario` (
-  `usuario` VARCHAR(45) NOT NULL COMMENT 'Debe medir maximo 20 caracteres, para que encriptada ocupe 45 caracteres',
+CREATE TABLE IF NOT EXISTS `novedades`.`Area` (
+  `id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Usuario` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Usuario` (
+  `id` VARCHAR(20) NOT NULL,
   `nombre` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(45) NOT NULL COMMENT 'Debe medir maximo 20 caracteres, para que encriptada ocupe 45 caracteres',
-  `area` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`usuario`),
-  INDEX `fk_usuario_area_idx` (`area` ASC) VISIBLE,
-  CONSTRAINT `fk_usuario_area`
-    FOREIGN KEY (`area`)
-    REFERENCES `novedades`.`Area` (`area`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  `password` VARCHAR(45) NOT NULL,
+  `Area_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Usuario_Area1_idx` (`Area_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Usuario_Area1`
+    FOREIGN KEY (`Area_id`)
+    REFERENCES `novedades`.`Area` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- CLIENTE ESPECIAL
 
-CREATE TABLE `novedades`.`Cliente_Especial` (
-  `codigo` VARCHAR(45) NOT NULL COMMENT 'Debe medir maximo 20 caracteres, para que encriptada ocupe 45 caracteres',
-  PRIMARY KEY (`codigo`));
+-- -----------------------------------------------------
+-- Table `novedades`.`Cliente_Especial`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Cliente_Especial` ;
 
--- TARJETA DE REGALO
--- TODO, preguntar si se debe encriptar este dato
-
-CREATE TABLE `novedades`.`Tarjeta_Regalo` (
-  `codigo` VARCHAR(25) NOT NULL,
-  `valor` TINYINT NOT NULL,
-  PRIMARY KEY (`codigo`));
-
--- SUCURSAL
-
-CREATE TABLE `novedades`.`Sucursal` (
-  `direccion` VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS `novedades`.`Cliente_Especial` (
+  `id` VARCHAR(10) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
-  `telefono` VARCHAR(10) NULL,
-  PRIMARY KEY (`direccion`));
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
--- PRODUCTO
 
-CREATE TABLE `novedades`.`Talla` (
-  `talla` VARCHAR(3) NOT NULL COMMENT 'MV: XXL',
-  PRIMARY KEY (`talla`));
+-- -----------------------------------------------------
+-- Table `novedades`.`Sucursal`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Sucursal` ;
 
-CREATE TABLE `novedades`.`Color` (
+CREATE TABLE IF NOT EXISTS `novedades`.`Sucursal` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `telefono` VARCHAR(9) NULL,
+  `direccion` VARCHAR(55) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Talla`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Talla` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Talla` (
+  `talla` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`talla`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Color`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Color` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Color` (
   `color` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`color`));
+  PRIMARY KEY (`color`))
+ENGINE = InnoDB;
 
-CREATE TABLE `novedades`.`Producto` (
-  `codigo` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(35) NOT NULL,
-  `es_compuesto` TINYINT NOT NULL DEFAULT 0,
-  `esta_descontinuada` TINYINT NOT NULL,
-  `precio` DOUBLE NOT NULL DEFAULT 0,
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Producto`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Producto` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Producto` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `compuesto` TINYINT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Prod_Talla`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Prod_Talla` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Prod_Talla` (
+  `Producto_id` INT NOT NULL,
+  `talla` VARCHAR(4) NOT NULL,
+  `precio` DOUBLE NOT NULL,
   `precio_especial` DOUBLE NOT NULL,
-  `talla` VARCHAR(3) NOT NULL,
-  `color` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`codigo`),
-  INDEX `fk_producto_talla_idx` (`talla` ASC) VISIBLE,
-  INDEX `fk_producto_color_idx` (`color` ASC) VISIBLE,
-  CONSTRAINT `fk_producto_talla`
+  PRIMARY KEY (`Producto_id`, `talla`),
+  INDEX `fk_Producto_has_Talla_Talla1_idx` (`talla` ASC) VISIBLE,
+  INDEX `fk_Producto_has_Talla_Producto1_idx` (`Producto_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Producto_has_Talla_Producto1`
+    FOREIGN KEY (`Producto_id`)
+    REFERENCES `novedades`.`Producto` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Producto_has_Talla_Talla1`
     FOREIGN KEY (`talla`)
     REFERENCES `novedades`.`Talla` (`talla`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_producto_color`
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Inventario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Inventario` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Inventario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `color` VARCHAR(20) NOT NULL,
+  `Prod_Talla_Producto_id` INT NOT NULL,
+  `Prod_Talla_talla` VARCHAR(4) NOT NULL,
+  INDEX `fk_Color_has_Prod_Talla_Prod_Talla1_idx` (`Prod_Talla_Producto_id` ASC, `Prod_Talla_talla` ASC) VISIBLE,
+  INDEX `fk_Color_has_Prod_Talla_Color1_idx` (`color` ASC) VISIBLE,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_Color_has_Prod_Talla_Color1`
     FOREIGN KEY (`color`)
     REFERENCES `novedades`.`Color` (`color`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Color_has_Prod_Talla_Prod_Talla1`
+    FOREIGN KEY (`Prod_Talla_Producto_id` , `Prod_Talla_talla`)
+    REFERENCES `novedades`.`Prod_Talla` (`Producto_id` , `talla`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
-CREATE TABLE `novedades`.`Producto_Producto` (
-  `producto_codigo` INT NOT NULL COMMENT 'El conjunto / prenda compuesta',
-  `producto_codigo_item` INT NOT NULL COMMENT 'Lo que forma el conjunto /  prenda compuesta',
-  PRIMARY KEY (`producto_codigo`, `producto_codigo_item`),
-  INDEX `fk_producto_item_idx` (`producto_codigo_item` ASC) VISIBLE,
-  CONSTRAINT `fk_producto_conjunto`
-    FOREIGN KEY (`producto_codigo`)
-    REFERENCES `novedades`.`Producto` (`codigo`)
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Conjunto`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Conjunto` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
+  `inventario_id_conjunto` INT NOT NULL,
+  `Inventario_id_pieza` INT NOT NULL,
+  PRIMARY KEY (`inventario_id_conjunto`, `Inventario_id_pieza`),
+  INDEX `fk_Inventario_has_Inventario_Inventario2_idx` (`Inventario_id_pieza` ASC) VISIBLE,
+  INDEX `fk_Inventario_has_Inventario_Inventario1_idx` (`inventario_id_conjunto` ASC) VISIBLE,
+  CONSTRAINT `fk_Inventario_has_Inventario_Inventario1`
+    FOREIGN KEY (`inventario_id_conjunto`)
+    REFERENCES `novedades`.`Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_producto_item`
-    FOREIGN KEY (`producto_codigo_item`)
-    REFERENCES `novedades`.`Producto` (`codigo`)
+  CONSTRAINT `fk_Inventario_has_Inventario_Inventario2`
+    FOREIGN KEY (`Inventario_id_pieza`)
+    REFERENCES `novedades`.`Inventario` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- PRODUCTO Y SUCURSAL
 
-CREATE TABLE `novedades`.`Producto_Sucursal` (
-  `sucursal_direccion` VARCHAR(50) NOT NULL,
-  `producto_codigo` INT NOT NULL,
-  `stock` INT NOT NULL,
-  PRIMARY KEY (`sucursal_direccion`, `producto_codigo`),
-  INDEX `fk_producto_sucursal_Producto_idx` (`producto_codigo` ASC) VISIBLE,
-  CONSTRAINT `fk_producto_sucursal_Sucursal`
-    FOREIGN KEY (`sucursal_direccion`)
-    REFERENCES `novedades`.`Sucursal` (`direccion`)
+-- -----------------------------------------------------
+-- Table `novedades`.`Disponibilidad`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Disponibilidad` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Disponibilidad` (
+  `Inventario_id` INT NOT NULL,
+  `Sucursal_id` INT NOT NULL,
+  PRIMARY KEY (`Inventario_id`, `Sucursal_id`),
+  INDEX `fk_Inventario_has_Sucursal_Sucursal1_idx` (`Sucursal_id` ASC) VISIBLE,
+  INDEX `fk_Inventario_has_Sucursal_Inventario1_idx` (`Inventario_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Inventario_has_Sucursal_Inventario1`
+    FOREIGN KEY (`Inventario_id`)
+    REFERENCES `novedades`.`Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_producto_sucursal_Producto`
-    FOREIGN KEY (`producto_codigo`)
-    REFERENCES `novedades`.`Producto` (`codigo`)
+  CONSTRAINT `fk_Inventario_has_Sucursal_Sucursal1`
+    FOREIGN KEY (`Sucursal_id`)
+    REFERENCES `novedades`.`Sucursal` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- ENVIOS
 
-CREATE TABLE `novedades`.`Envio` (
+-- -----------------------------------------------------
+-- Table `novedades`.`Envio`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Envio` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Envio` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL DEFAULT (CURRENT_DATE),
-  `sucursal_direccion_destino` VARCHAR(50) NOT NULL, -- no contiene origen porque se obtiene del contenido de Produto_Envio
+  `feha` DATE NOT NULL,
+  `Sucursal_id_destino` INT NOT NULL,
+  `Usuario_id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_envio_sucursal_destino_idx` (`sucursal_direccion_destino` ASC) VISIBLE,
-  CONSTRAINT `fk_envio_sucursal_destino`
-    FOREIGN KEY (`sucursal_direccion_destino`)
-    REFERENCES `novedades`.`Sucursal` (`direccion`)
+  INDEX `fk_Envio_Sucursal1_idx` (`Sucursal_id_destino` ASC) VISIBLE,
+  INDEX `fk_Envio_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Envio_Sucursal1`
+    FOREIGN KEY (`Sucursal_id_destino`)
+    REFERENCES `novedades`.`Sucursal` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE);
-
-CREATE TABLE `novedades`.`Producto_Envio` (
-  `envio_id` INT NOT NULL,
-  `producto_sucursal_codigo` INT NOT NULL,
-  `producto_sucursal_sucursal` VARCHAR(50) NULL,
-  `cantidad` INT NOT NULL DEFAULT 1,
-  PRIMARY KEY (`envio_id`, `producto_sucursal_codigo`),
-  INDEX `fk_Producto_envio_Producto_sucursal_idx` (`producto_sucursal_codigo` ASC, `producto_sucursal_sucursal` ASC) VISIBLE,
-  CONSTRAINT `fk_Producto_envio_Producto_sucursal`
-    FOREIGN KEY (`producto_sucursal_codigo` , `producto_sucursal_sucursal`)
-    REFERENCES `novedades`.`Producto_Sucursal` (`producto_codigo` , `sucursal_direccion`)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Envio_Usuario1`
+    FOREIGN KEY (`Usuario_id`)
+    REFERENCES `novedades`.`Usuario` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- VENTA
 
-CREATE TABLE `novedades`.`Venta` (
+-- -----------------------------------------------------
+-- Table `novedades`.`Paquete`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Paquete` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Paquete` (
+  `Disponibilidad_Inventario_id` INT NOT NULL,
+  `Disponibilidad_Sucursal_id` INT NOT NULL,
+  `Envio_id` INT NOT NULL,
+  PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Envio_id`),
+  INDEX `fk_Disponibilidad_has_Envio_Envio1_idx` (`Envio_id` ASC) VISIBLE,
+  INDEX `fk_Disponibilidad_has_Envio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Disponibilidad_has_Envio_Disponibilidad1`
+    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
+    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Disponibilidad_has_Envio_Envio1`
+    FOREIGN KEY (`Envio_id`)
+    REFERENCES `novedades`.`Envio` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Venta`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Venta` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Venta` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL DEFAULT (CURRENT_DATE),
-  `nombre` VARCHAR(45) NULL,
-  `NIT` VARCHAR(9) NULL,
+  `fecha` DATE NOT NULL,
+  `nit` VARCHAR(10) NULL DEFAULT 'CF',
+  `nombre` VARCHAR(45) NOT NULL,
   `total` DECIMAL NOT NULL,
-  PRIMARY KEY (`id`));
-
-CREATE TABLE `novedades`.`Venta_Prod_Sucursal` (
-  `venta_id` INT NOT NULL,
-  `producto_sucursal_direccion` VARCHAR(50) NOT NULL,
-  `producto_sucursal_prod_codigo` INT NOT NULL,
-  `cantidad` TINYINT NOT NULL DEFAULT 1,
-  PRIMARY KEY (`venta_id`, `producto_sucursal_direccion`, `producto_sucursal_prod_codigo`),
-  INDEX `fk_venta_producto_sucursal_idx` (`producto_sucursal_direccion` ASC, `producto_sucursal_prod_codigo` ASC) VISIBLE,
-  CONSTRAINT `fk_venta_prod_sucursal_producto_sucursal`
-    FOREIGN KEY (`producto_sucursal_direccion` , `producto_sucursal_prod_codigo`)
-    REFERENCES `novedades`.`Producto_Sucursal` (`sucursal_direccion` , `producto_codigo`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_venta_prod_sucursal_venta`
-	FOREIGN KEY (`venta_id`)
-    REFERENCES `novedades`.`Venta` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE);
-
--- INTERCAMBIO
-
-CREATE TABLE `novedades`.`Intercambio` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `venta_id` INT NOT NULL,
-  `prod_codigo_original` INT NOT NULL,
-  `prod_codigo_cambio` INT NOT NULL,
-  `prod_sucursal_original` VARCHAR(50) NOT NULL,
-  `prod_sucursal_cambio` VARCHAR(50) NOT NULL,
+  `Usuario_id` VARCHAR(20) NOT NULL,
+  `Cliente_Especial_id` VARCHAR(10) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_intercambio_prod_sucursal_idx` (`prod_codigo_original` ASC, `prod_sucursal_original` ASC) VISIBLE,
-  INDEX `fk_intercambio_prod_sucursal_cambio_idx` (`prod_codigo_cambio` ASC, `prod_sucursal_cambio` ASC) VISIBLE,
-  CONSTRAINT `fk_intercambio_venta`
-    FOREIGN KEY (`venta_id`)
+  INDEX `fk_Venta_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
+  INDEX `fk_Venta_Cliente_Especial1_idx` (`Cliente_Especial_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Venta_Usuario1`
+    FOREIGN KEY (`Usuario_id`)
+    REFERENCES `novedades`.`Usuario` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Venta_Cliente_Especial1`
+    FOREIGN KEY (`Cliente_Especial_id`)
+    REFERENCES `novedades`.`Cliente_Especial` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `novedades`.`Listado_Venta`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Listado_Venta` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Listado_Venta` (
+  `Disponibilidad_Inventario_id` INT NOT NULL,
+  `Disponibilidad_Sucursal_id` INT NOT NULL,
+  `Venta_id` INT NOT NULL,
+  `cantidad` TINYINT NOT NULL,
+  PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Venta_id`),
+  INDEX `fk_Disponibilidad_has_Venta_Venta1_idx` (`Venta_id` ASC) VISIBLE,
+  INDEX `fk_Disponibilidad_has_Venta_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Disponibilidad_has_Venta_Disponibilidad1`
+    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
+    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Disponibilidad_has_Venta_Venta1`
+    FOREIGN KEY (`Venta_id`)
     REFERENCES `novedades`.`Venta` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_intercambio_prod_sucursal_original`
-    FOREIGN KEY (`prod_codigo_original` , `prod_sucursal_original`)
-    REFERENCES `novedades`.`Producto_Sucursal` (`producto_codigo` , `sucursal_direccion`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_intercambio_prod_sucursal_cambio`
-    FOREIGN KEY (`prod_codigo_cambio` , `prod_sucursal_cambio`)
-    REFERENCES `novedades`.`Producto_Sucursal` (`producto_codigo` , `sucursal_direccion`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
 
--- CREACION DE USUARIO PARA APPLICACION
 
-USE mysql; -- cambio de BD para crear usuario
+-- -----------------------------------------------------
+-- Table `novedades`.`Intercambio`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Intercambio` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
+  `id` INT NOT NULL,
+  `fecha` DATE NOT NULL,
+  `Disponibilidad_Inventario_id` INT NOT NULL,
+  `Disponibilidad_Sucursal_id` INT NOT NULL,
+  `Disponibilidad_Inventario_id1` INT NOT NULL,
+  `Disponibilidad_Sucursal_id1` INT NOT NULL,
+  `Venta_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Intercambio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  INDEX `fk_Intercambio_Disponibilidad2_idx` (`Disponibilidad_Inventario_id1` ASC, `Disponibilidad_Sucursal_id1` ASC) VISIBLE,
+  INDEX `fk_Intercambio_Venta1_idx` (`Venta_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Intercambio_Disponibilidad1`
+    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
+    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Intercambio_Disponibilidad2`
+    FOREIGN KEY (`Disponibilidad_Inventario_id1` , `Disponibilidad_Sucursal_id1`)
+    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Intercambio_Venta1`
+    FOREIGN KEY (`Venta_id`)
+    REFERENCES `novedades`.`Venta` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+USE `novedades`;
+
+DELIMITER $$
+
+USE `novedades`$$
+DROP TRIGGER IF EXISTS `novedades`.`Inventario_BEFORE_INSERT` $$
+USE `novedades`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Inventario_BEFORE_INSERT` BEFORE INSERT ON `Inventario` FOR EACH ROW
+BEGIN
+	IF EXISTS 
+		(SELECT * FROM `Inventario` 
+			WHERE color=new.color 
+            AND Prod_Talla_Producto_id = new.Prod_Talla_Producto_id
+            AND Prod_Talla_talla = new.Prod_Talla_talla) THEN
+				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Ya existe un elemento con estos atributos";
+	END IF;
+END$$
+
+
+DELIMITER ;
 
 -- configuración de usuario que solo tendrá acceso a la BD que se creará
+
+USE `mysql`;
 
 DROP USER IF EXISTS 'app-usr'@'localhost';
 CREATE USER 'app-usr'@'localhost' IDENTIFIED BY 'Carro_252525';
 GRANT ALL PRIVILEGES ON `novedades`.* TO 'app-usr'@'localhost';
 FLUSH PRIVILEGES;
-
