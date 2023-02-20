@@ -134,7 +134,7 @@ DROP TABLE IF EXISTS `novedades`.`Producto` ;
 
 CREATE TABLE IF NOT EXISTS `novedades`.`Producto` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL UNIQUE,
   `compuesto` TINYINT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
@@ -199,9 +199,9 @@ DROP TABLE IF EXISTS `novedades`.`Conjunto` ;
 
 CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
   `inventario_id_conjunto` INT NOT NULL,
-  `Inventario_id_pieza` INT NOT NULL,
-  PRIMARY KEY (`inventario_id_conjunto`, `Inventario_id_pieza`),
-  INDEX `fk_Inventario_has_Inventario_Inventario2_idx` (`Inventario_id_pieza` ASC) VISIBLE,
+  `inventario_id_pieza` INT NOT NULL,
+  PRIMARY KEY (`inventario_id_conjunto`, `inventario_id_pieza`),
+  INDEX `fk_Inventario_has_Inventario_Inventario2_idx` (`inventario_id_pieza` ASC) VISIBLE,
   INDEX `fk_Inventario_has_Inventario_Inventario1_idx` (`inventario_id_conjunto` ASC) VISIBLE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario1`
     FOREIGN KEY (`inventario_id_conjunto`)
@@ -209,12 +209,11 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario2`
-    FOREIGN KEY (`Inventario_id_pieza`)
+    FOREIGN KEY (`inventario_id_pieza`)
     REFERENCES `novedades`.`Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `novedades`.`Disponibilidad`
@@ -224,6 +223,7 @@ DROP TABLE IF EXISTS `novedades`.`Disponibilidad` ;
 CREATE TABLE IF NOT EXISTS `novedades`.`Disponibilidad` (
   `Inventario_id` INT NOT NULL,
   `Sucursal_id` INT NOT NULL,
+  `stock` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`Inventario_id`, `Sucursal_id`),
   INDEX `fk_Inventario_has_Sucursal_Sucursal1_idx` (`Sucursal_id` ASC) VISIBLE,
   INDEX `fk_Inventario_has_Sucursal_Inventario1_idx` (`Inventario_id` ASC) VISIBLE,
@@ -275,6 +275,7 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Paquete` (
   `Disponibilidad_Inventario_id` INT NOT NULL,
   `Disponibilidad_Sucursal_id` INT NOT NULL,
   `Envio_id` INT NOT NULL,
+  `cantidad` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Envio_id`),
   INDEX `fk_Disponibilidad_has_Envio_Envio1_idx` (`Envio_id` ASC) VISIBLE,
   INDEX `fk_Disponibilidad_has_Envio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
@@ -380,6 +381,10 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- //////////////////////////////////////////////////////////////
+-- ///////////////            TRIGGERS            ///////////////
+-- //////////////////////////////////////////////////////////////
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -403,6 +408,40 @@ BEGIN
 END$$
 
 
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS `novedades`.`Conjunto_BEFORE_INSERT`;
+
+DELIMITER $$
+USE `novedades`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Conjunto_BEFORE_INSERT` BEFORE INSERT ON `Conjunto` FOR EACH ROW
+BEGIN
+    -- bundle color and size
+	DECLARE piece_color VARCHAR(20);
+    DECLARE conj_color VARCHAR(20);
+    DECLARE piece_size VARCHAR(4);
+    DECLARE conj_size VARCHAR(4);
+    DECLARE is_conj TINYINT;
+
+    -- get the bundle data and piece data
+    SELECT `compuesto` INTO is_conj FROM `novedades`.`Producto` WHERE `id`=new.inventario_id_conjunto;
+
+    SELECT `Prod_Talla_talla` INTO conj_size FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
+    SELECT `Prod_Talla_talla` INTO conj_size FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_conjunto;
+
+    SELECT `color` INTO piece_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
+    SELECT `color` INTO conj_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_conjunto;
+
+    -- compare
+    IF(is_conj = 0) THEN
+      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "La pieza madre no es un conjunto";
+    ELSE
+      IF (piece_color != conj_color OR piece_size != conj_size) THEN
+          -- error
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "El conjunto y la pieza no coinciden en talla o color";
+      END IF;
+    END IF;
+END$$
 DELIMITER ;
 
 -- configuración de usuario que solo tendrá acceso a la BD que se creará
