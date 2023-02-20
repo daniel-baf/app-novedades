@@ -53,7 +53,7 @@
 <div id="title-sect">
 <h1>novedades<br> Data Dictionay</h1>
 <p>
-<em>2023-02-19</em>
+<em>2023-02-20</em>
 </p>
 <p class="proj-desc">
 <em></em>
@@ -66,12 +66,12 @@
 <li><a href='#Cliente_Especial'>Cliente_Especial</a></li>
 <li><a href='#Color'>Color</a></li>
 <li><a href='#Conjunto'>Conjunto</a></li>
-<li><a href='#Disponibilidad'>Disponibilidad</a></li>
+<li><a href='#Detalle_Venta'>Detalle_Venta</a></li>
 <li><a href='#Envio'>Envio</a></li>
 <li><a href='#Gasto'>Gasto</a></li>
 <li><a href='#Intercambio'>Intercambio</a></li>
 <li><a href='#Inventario'>Inventario</a></li>
-<li><a href='#Listado_Venta'>Listado_Venta</a></li>
+<li><a href='#Inventario_Sucursal'>Inventario_Sucursal</a></li>
 <li><a href='#Paquete'>Paquete</a></li>
 <li><a href='#Prod_Talla'>Prod_Talla</a></li>
 <li><a href='#Producto'>Producto</a></li>
@@ -251,8 +251,8 @@
     <td></td>
     <td></td>
 </tr>
-<table id='Disponibilidad'>
-<caption>Disponibilidad</caption>
+<table id='Detalle_Venta'>
+<caption>Detalle_Venta</caption>
 <tr><td colspan='11'></td></tr>
 <tr>
     <th>Column name</th>
@@ -268,7 +268,7 @@
     <th>Comment</th>
 </tr>
 <tr>
-    <td>Inventario_id</td>
+    <td>Disponibilidad_Inventario_id</td>
     <td>INT</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
@@ -281,7 +281,7 @@
     <td></td>
 </tr>
 <tr>
-    <td>Sucursal_id</td>
+    <td>Disponibilidad_Sucursal_id</td>
     <td>INT</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
@@ -294,8 +294,21 @@
     <td></td>
 </tr>
 <tr>
-    <td>stock</td>
+    <td>Venta_id</td>
     <td>INT</td>
+    <td>&#10004;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>cantidad</td>
+    <td>TINYINT</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -303,7 +316,33 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td class='attr'>&nbsp;</td>
-    <td>0</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>precio_unitario</td>
+    <td>DECIMAL</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>subtotal</td>
+    <td>DECIMAL</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
     <td></td>
 </tr>
 <table id='Envio'>
@@ -338,19 +377,6 @@
 <tr>
     <td>feha</td>
     <td>DATE</td>
-    <td>&nbsp;</td>
-    <td>&#10004;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>Sucursal_id_destino</td>
-    <td>INT</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -643,8 +669,8 @@
     <td></td>
     <td></td>
 </tr>
-<table id='Listado_Venta'>
-<caption>Listado_Venta</caption>
+<table id='Inventario_Sucursal'>
+<caption>Inventario_Sucursal</caption>
 <tr><td colspan='11'></td></tr>
 <tr>
     <th>Column name</th>
@@ -660,7 +686,7 @@
     <th>Comment</th>
 </tr>
 <tr>
-    <td>Disponibilidad_Inventario_id</td>
+    <td>Inventario_id</td>
     <td>INT</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
@@ -673,7 +699,7 @@
     <td></td>
 </tr>
 <tr>
-    <td>Disponibilidad_Sucursal_id</td>
+    <td>Sucursal_id</td>
     <td>INT</td>
     <td>&#10004;</td>
     <td>&#10004;</td>
@@ -686,21 +712,8 @@
     <td></td>
 </tr>
 <tr>
-    <td>Venta_id</td>
+    <td>stock</td>
     <td>INT</td>
-    <td>&#10004;</td>
-    <td>&#10004;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td class='attr'>&nbsp;</td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>cantidad</td>
-    <td>TINYINT</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>
@@ -708,7 +721,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td class='attr'>&nbsp;</td>
-    <td></td>
+    <td>0</td>
     <td></td>
 </tr>
 <table id='Paquete'>
@@ -777,6 +790,19 @@
     <td>&nbsp;</td>
     <td class='attr'>&nbsp;</td>
     <td>1</td>
+    <td></td>
+</tr>
+<tr>
+    <td>Sucursal_id</td>
+    <td>INT</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
     <td></td>
 </tr>
 <table id='Prod_Talla'>
@@ -1057,6 +1083,19 @@
 <tr>
     <td>Area_id</td>
     <td>VARCHAR(20)</td>
+    <td>&nbsp;</td>
+    <td>&#10004;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='attr'>&nbsp;</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>Gasto_id</td>
+    <td>INT</td>
     <td>&nbsp;</td>
     <td>&#10004;</td>
     <td>&nbsp;</td>

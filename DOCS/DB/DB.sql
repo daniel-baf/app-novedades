@@ -68,13 +68,20 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Usuario` (
   `nombre` VARCHAR(50) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `Area_id` VARCHAR(20) NOT NULL,
+  `Gasto_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Usuario_Area1_idx` (`Area_id` ASC) VISIBLE,
+  INDEX `fk_Usuario_Gasto1_idx` (`Gasto_id` ASC) VISIBLE,
   CONSTRAINT `fk_Usuario_Area1`
     FOREIGN KEY (`Area_id`)
     REFERENCES `novedades`.`Area` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Usuario_Gasto1`
+    FOREIGN KEY (`Gasto_id`)
+    REFERENCES `novedades`.`Gasto` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -134,11 +141,12 @@ DROP TABLE IF EXISTS `novedades`.`Producto` ;
 
 CREATE TABLE IF NOT EXISTS `novedades`.`Producto` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL UNIQUE,
+  `nombre` VARCHAR(45) NOT NULL,
   `compuesto` TINYINT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `novedades`.`Prod_Talla`
@@ -199,9 +207,9 @@ DROP TABLE IF EXISTS `novedades`.`Conjunto` ;
 
 CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
   `inventario_id_conjunto` INT NOT NULL,
-  `inventario_id_pieza` INT NOT NULL,
-  PRIMARY KEY (`inventario_id_conjunto`, `inventario_id_pieza`),
-  INDEX `fk_Inventario_has_Inventario_Inventario2_idx` (`inventario_id_pieza` ASC) VISIBLE,
+  `Inventario_id_pieza` INT NOT NULL,
+  PRIMARY KEY (`inventario_id_conjunto`, `Inventario_id_pieza`),
+  INDEX `fk_Inventario_has_Inventario_Inventario2_idx` (`Inventario_id_pieza` ASC) VISIBLE,
   INDEX `fk_Inventario_has_Inventario_Inventario1_idx` (`inventario_id_conjunto` ASC) VISIBLE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario1`
     FOREIGN KEY (`inventario_id_conjunto`)
@@ -209,18 +217,19 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario2`
-    FOREIGN KEY (`inventario_id_pieza`)
+    FOREIGN KEY (`Inventario_id_pieza`)
     REFERENCES `novedades`.`Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
--- -----------------------------------------------------
--- Table `novedades`.`Disponibilidad`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Disponibilidad` ;
 
-CREATE TABLE IF NOT EXISTS `novedades`.`Disponibilidad` (
+-- -----------------------------------------------------
+-- Table `novedades`.`Inventario_Sucursal`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `novedades`.`Inventario_Sucursal` ;
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Inventario_Sucursal` (
   `Inventario_id` INT NOT NULL,
   `Sucursal_id` INT NOT NULL,
   `stock` INT NOT NULL DEFAULT 0,
@@ -248,16 +257,10 @@ DROP TABLE IF EXISTS `novedades`.`Envio` ;
 CREATE TABLE IF NOT EXISTS `novedades`.`Envio` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `feha` DATE NOT NULL,
-  `Sucursal_id_destino` INT NOT NULL,
   `Usuario_id` VARCHAR(20) NOT NULL,
+  `cantidad` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
-  INDEX `fk_Envio_Sucursal1_idx` (`Sucursal_id_destino` ASC) VISIBLE,
   INDEX `fk_Envio_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Envio_Sucursal1`
-    FOREIGN KEY (`Sucursal_id_destino`)
-    REFERENCES `novedades`.`Sucursal` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_Envio_Usuario1`
     FOREIGN KEY (`Usuario_id`)
     REFERENCES `novedades`.`Usuario` (`id`)
@@ -276,19 +279,26 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Paquete` (
   `Disponibilidad_Sucursal_id` INT NOT NULL,
   `Envio_id` INT NOT NULL,
   `cantidad` INT NOT NULL DEFAULT 1,
+  `Sucursal_id` INT NOT NULL,
   PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Envio_id`),
   INDEX `fk_Disponibilidad_has_Envio_Envio1_idx` (`Envio_id` ASC) VISIBLE,
   INDEX `fk_Disponibilidad_has_Envio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  INDEX `fk_Paquete_Sucursal1_idx` (`Sucursal_id` ASC) VISIBLE,
   CONSTRAINT `fk_Disponibilidad_has_Envio_Disponibilidad1`
     FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Disponibilidad_has_Envio_Envio1`
     FOREIGN KEY (`Envio_id`)
     REFERENCES `novedades`.`Envio` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Paquete_Sucursal1`
+    FOREIGN KEY (`Sucursal_id`)
+    REFERENCES `novedades`.`Sucursal` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -322,21 +332,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Listado_Venta`
+-- Table `novedades`.`Detalle_Venta`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Listado_Venta` ;
+DROP TABLE IF EXISTS `novedades`.`Detalle_Venta` ;
 
-CREATE TABLE IF NOT EXISTS `novedades`.`Listado_Venta` (
+CREATE TABLE IF NOT EXISTS `novedades`.`Detalle_Venta` (
   `Disponibilidad_Inventario_id` INT NOT NULL,
   `Disponibilidad_Sucursal_id` INT NOT NULL,
   `Venta_id` INT NOT NULL,
   `cantidad` TINYINT NOT NULL,
+  `precio_unitario` DECIMAL NOT NULL,
+  `subtotal` DECIMAL NOT NULL,
   PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Venta_id`),
   INDEX `fk_Disponibilidad_has_Venta_Venta1_idx` (`Venta_id` ASC) VISIBLE,
   INDEX `fk_Disponibilidad_has_Venta_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
   CONSTRAINT `fk_Disponibilidad_has_Venta_Disponibilidad1`
     FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Disponibilidad_has_Venta_Venta1`
@@ -366,12 +378,12 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
   INDEX `fk_Intercambio_Venta1_idx` (`Venta_id` ASC) VISIBLE,
   CONSTRAINT `fk_Intercambio_Disponibilidad1`
     FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Intercambio_Disponibilidad2`
     FOREIGN KEY (`Disponibilidad_Inventario_id1` , `Disponibilidad_Sucursal_id1`)
-    REFERENCES `novedades`.`Disponibilidad` (`Inventario_id` , `Sucursal_id`)
+    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Intercambio_Venta1`
@@ -381,14 +393,6 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
--- //////////////////////////////////////////////////////////////
--- ///////////////            TRIGGERS            ///////////////
--- //////////////////////////////////////////////////////////////
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 USE `novedades`;
 
 DELIMITER $$
@@ -408,11 +412,8 @@ BEGIN
 END$$
 
 
-DELIMITER ;
-
-DROP TRIGGER IF EXISTS `novedades`.`Conjunto_BEFORE_INSERT`;
-
-DELIMITER $$
+USE `novedades`$$
+DROP TRIGGER IF EXISTS `novedades`.`Conjunto_BEFORE_INSERT` $$
 USE `novedades`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Conjunto_BEFORE_INSERT` BEFORE INSERT ON `Conjunto` FOR EACH ROW
 BEGIN
@@ -424,6 +425,7 @@ BEGIN
     DECLARE is_conj TINYINT;
 
     -- get the bundle data and piece data
+
     SELECT `compuesto` INTO is_conj FROM `novedades`.`Producto` WHERE `id`=new.inventario_id_conjunto;
 
     SELECT `Prod_Talla_talla` INTO conj_size FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
@@ -442,7 +444,14 @@ BEGIN
       END IF;
     END IF;
 END$$
+
+
 DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 -- configuración de usuario que solo tendrá acceso a la BD que se creará
 
