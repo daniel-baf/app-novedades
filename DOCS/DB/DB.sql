@@ -392,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
+  
 USE `novedades`;
 
 DELIMITER $$
