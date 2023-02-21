@@ -159,4 +159,4 @@ INSERT INTO `novedades`.`Intercambio` (`fecha`, `Inventario_Sucursal_Inventario_
 INSERT INTO `novedades`.`Venta` (`fecha`, `nit`, `nombre`, `total`, `Usuario_id`, `Cliente_Especial_id`) VALUES
 	('2019-12-10', '12345678', 'Juanito', 72, 'vnt1', 'esp1');
 INSERT INTO `novedades`.`Detalle_Venta` (`Inventario_Sucursal_Inventario_id`, `Inventario_Sucursal_Sucursal_id`, `Venta_id`, `cantidad`, `precio_unitario`, `subtotal`) VALUES
-	(2, 1, 1, 1, 72, 72);
+	(2, 1, 5, 1, 72, 72);
