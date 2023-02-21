@@ -16,144 +16,79 @@ CREATE SCHEMA IF NOT EXISTS `novedades` ;
 USE `novedades` ;
 
 -- -----------------------------------------------------
--- Table `novedades`.`Categoria_Gasto`
+-- Table `Area`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Categoria_Gasto` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Categoria_Gasto` (
-  `gasto` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`gasto`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `novedades`.`Gasto`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Gasto` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Gasto` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE NOT NULL,
-  `total` DOUBLE NOT NULL,
-  `descripcion` VARCHAR(100) NULL,
-  `categoria_gasto` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_Gasto_Categoria_Gasto_idx` (`categoria_gasto` ASC) VISIBLE,
-  CONSTRAINT `fk_Gasto_Categoria_Gasto`
-    FOREIGN KEY (`categoria_gasto`)
-    REFERENCES `novedades`.`Categoria_Gasto` (`gasto`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `novedades`.`Area`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Area` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Area` (
+CREATE TABLE IF NOT EXISTS `Area` (
   `id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Usuario`
+-- Table `Categoria_Gasto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Usuario` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Usuario` (
-  `id` VARCHAR(20) NOT NULL,
-  `nombre` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `Area_id` VARCHAR(20) NOT NULL,
-  `Gasto_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_Usuario_Area1_idx` (`Area_id` ASC) VISIBLE,
-  INDEX `fk_Usuario_Gasto1_idx` (`Gasto_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Usuario_Area1`
-    FOREIGN KEY (`Area_id`)
-    REFERENCES `novedades`.`Area` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_Usuario_Gasto1`
-    FOREIGN KEY (`Gasto_id`)
-    REFERENCES `novedades`.`Gasto` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `Categoria_Gasto` (
+  `gasto` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`gasto`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Cliente_Especial`
+-- Table `Cliente_Especial`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Cliente_Especial` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Cliente_Especial` (
+CREATE TABLE IF NOT EXISTS `Cliente_Especial` (
   `id` VARCHAR(10) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Sucursal`
+-- Table `Color`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Sucursal` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Sucursal` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(50) NOT NULL,
-  `telefono` VARCHAR(9) NULL,
-  `direccion` VARCHAR(55) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `novedades`.`Talla`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Talla` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Talla` (
-  `talla` VARCHAR(4) NOT NULL,
-  PRIMARY KEY (`talla`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `novedades`.`Color`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Color` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Color` (
+CREATE TABLE IF NOT EXISTS `Color` (
   `color` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`color`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Producto`
+-- Table `Producto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Producto` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Producto` (
+CREATE TABLE IF NOT EXISTS `Producto` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `compuesto` TINYINT NULL,
+  `compuesto` TINYINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Prod_Talla`
+-- Table `Talla`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Prod_Talla` ;
+CREATE TABLE IF NOT EXISTS `Talla` (
+  `talla` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`talla`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `novedades`.`Prod_Talla` (
+
+-- -----------------------------------------------------
+-- Table `Prod_Talla`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Prod_Talla` (
   `Producto_id` INT NOT NULL,
   `talla` VARCHAR(4) NOT NULL,
   `precio` DOUBLE NOT NULL,
@@ -163,49 +98,49 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Prod_Talla` (
   INDEX `fk_Producto_has_Talla_Producto1_idx` (`Producto_id` ASC) VISIBLE,
   CONSTRAINT `fk_Producto_has_Talla_Producto1`
     FOREIGN KEY (`Producto_id`)
-    REFERENCES `novedades`.`Producto` (`id`)
+    REFERENCES `Producto` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Producto_has_Talla_Talla1`
     FOREIGN KEY (`talla`)
-    REFERENCES `novedades`.`Talla` (`talla`)
+    REFERENCES `Talla` (`talla`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Inventario`
+-- Table `Inventario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Inventario` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Inventario` (
+CREATE TABLE IF NOT EXISTS `Inventario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `color` VARCHAR(20) NOT NULL,
   `Prod_Talla_Producto_id` INT NOT NULL,
   `Prod_Talla_talla` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`id`),
   INDEX `fk_Color_has_Prod_Talla_Prod_Talla1_idx` (`Prod_Talla_Producto_id` ASC, `Prod_Talla_talla` ASC) VISIBLE,
   INDEX `fk_Color_has_Prod_Talla_Color1_idx` (`color` ASC) VISIBLE,
-  PRIMARY KEY (`id`),
   CONSTRAINT `fk_Color_has_Prod_Talla_Color1`
     FOREIGN KEY (`color`)
-    REFERENCES `novedades`.`Color` (`color`)
+    REFERENCES `Color` (`color`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Color_has_Prod_Talla_Prod_Talla1`
     FOREIGN KEY (`Prod_Talla_Producto_id` , `Prod_Talla_talla`)
-    REFERENCES `novedades`.`Prod_Talla` (`Producto_id` , `talla`)
+    REFERENCES `Prod_Talla` (`Producto_id` , `talla`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Conjunto`
+-- Table `Conjunto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Conjunto` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
+CREATE TABLE IF NOT EXISTS `Conjunto` (
   `inventario_id_conjunto` INT NOT NULL,
   `Inventario_id_pieza` INT NOT NULL,
   PRIMARY KEY (`inventario_id_conjunto`, `Inventario_id_pieza`),
@@ -213,194 +148,264 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Conjunto` (
   INDEX `fk_Inventario_has_Inventario_Inventario1_idx` (`inventario_id_conjunto` ASC) VISIBLE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario1`
     FOREIGN KEY (`inventario_id_conjunto`)
-    REFERENCES `novedades`.`Inventario` (`id`)
+    REFERENCES `Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Inventario_has_Inventario_Inventario2`
     FOREIGN KEY (`Inventario_id_pieza`)
-    REFERENCES `novedades`.`Inventario` (`id`)
+    REFERENCES `Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Inventario_Sucursal`
+-- Table `Sucursal`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Inventario_Sucursal` ;
+CREATE TABLE IF NOT EXISTS `Sucursal` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `telefono` VARCHAR(9) NULL DEFAULT NULL,
+  `direccion` VARCHAR(55) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `novedades`.`Inventario_Sucursal` (
+
+-- -----------------------------------------------------
+-- Table `Inventario_Sucursal`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Inventario_Sucursal` (
   `Inventario_id` INT NOT NULL,
   `Sucursal_id` INT NOT NULL,
-  `stock` INT NOT NULL DEFAULT 0,
+  `stock` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`Inventario_id`, `Sucursal_id`),
   INDEX `fk_Inventario_has_Sucursal_Sucursal1_idx` (`Sucursal_id` ASC) VISIBLE,
   INDEX `fk_Inventario_has_Sucursal_Inventario1_idx` (`Inventario_id` ASC) VISIBLE,
   CONSTRAINT `fk_Inventario_has_Sucursal_Inventario1`
     FOREIGN KEY (`Inventario_id`)
-    REFERENCES `novedades`.`Inventario` (`id`)
+    REFERENCES `Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Inventario_has_Sucursal_Sucursal1`
     FOREIGN KEY (`Sucursal_id`)
-    REFERENCES `novedades`.`Sucursal` (`id`)
+    REFERENCES `Sucursal` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Envio`
+-- Table `Usuario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Envio` ;
+CREATE TABLE IF NOT EXISTS `Usuario` (
+  `id` VARCHAR(20) NOT NULL,
+  `nombre` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `Area_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Usuario_Area1_idx` (`Area_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Usuario_Area1`
+    FOREIGN KEY (`Area_id`)
+    REFERENCES `Area` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `novedades`.`Envio` (
+
+-- -----------------------------------------------------
+-- Table `Envio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Envio` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `feha` DATE NOT NULL,
+  `fecha` DATE NOT NULL,
   `Usuario_id` VARCHAR(20) NOT NULL,
-  `cantidad` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_Envio_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
   CONSTRAINT `fk_Envio_Usuario1`
     FOREIGN KEY (`Usuario_id`)
-    REFERENCES `novedades`.`Usuario` (`id`)
+    REFERENCES `Usuario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Paquete`
+-- Table `Detalle_Envio`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Paquete` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Paquete` (
-  `Disponibilidad_Inventario_id` INT NOT NULL,
-  `Disponibilidad_Sucursal_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `Detalle_Envio` (
+  `Inventario_Sucursal_Inventario_id` INT NOT NULL,
+  `Inventario_Sucursal_Sucursal_id` INT NOT NULL,
   `Envio_id` INT NOT NULL,
-  `cantidad` INT NOT NULL DEFAULT 1,
+  `cantidad` INT NOT NULL DEFAULT '1',
   `Sucursal_id` INT NOT NULL,
-  PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Envio_id`),
+  PRIMARY KEY (`Inventario_Sucursal_Inventario_id`, `Inventario_Sucursal_Sucursal_id`, `Envio_id`),
   INDEX `fk_Disponibilidad_has_Envio_Envio1_idx` (`Envio_id` ASC) VISIBLE,
-  INDEX `fk_Disponibilidad_has_Envio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  INDEX `fk_Disponibilidad_has_Envio_Disponibilidad1_idx` (`Inventario_Sucursal_Inventario_id` ASC, `Inventario_Sucursal_Sucursal_id` ASC) VISIBLE,
   INDEX `fk_Paquete_Sucursal1_idx` (`Sucursal_id` ASC) VISIBLE,
   CONSTRAINT `fk_Disponibilidad_has_Envio_Disponibilidad1`
-    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
+    FOREIGN KEY (`Inventario_Sucursal_Inventario_id` , `Inventario_Sucursal_Sucursal_id`)
+    REFERENCES `Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Disponibilidad_has_Envio_Envio1`
     FOREIGN KEY (`Envio_id`)
-    REFERENCES `novedades`.`Envio` (`id`)
+    REFERENCES `Envio` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Paquete_Sucursal1`
     FOREIGN KEY (`Sucursal_id`)
-    REFERENCES `novedades`.`Sucursal` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `Sucursal` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Venta`
+-- Table `Venta`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Venta` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Venta` (
+CREATE TABLE IF NOT EXISTS `Venta` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
   `nit` VARCHAR(10) NULL DEFAULT 'CF',
   `nombre` VARCHAR(45) NOT NULL,
-  `total` DECIMAL NOT NULL,
+  `total` DECIMAL(10,0) NOT NULL,
   `Usuario_id` VARCHAR(20) NOT NULL,
-  `Cliente_Especial_id` VARCHAR(10) NULL,
+  `Cliente_Especial_id` VARCHAR(10) NULL DEFAULT NULL,
+  `no_listada` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_Venta_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
   INDEX `fk_Venta_Cliente_Especial1_idx` (`Cliente_Especial_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Venta_Usuario1`
-    FOREIGN KEY (`Usuario_id`)
-    REFERENCES `novedades`.`Usuario` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_Venta_Cliente_Especial1`
     FOREIGN KEY (`Cliente_Especial_id`)
-    REFERENCES `novedades`.`Cliente_Especial` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `Cliente_Especial` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Venta_Usuario1`
+    FOREIGN KEY (`Usuario_id`)
+    REFERENCES `Usuario` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Detalle_Venta`
+-- Table `Detalle_Venta`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Detalle_Venta` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Detalle_Venta` (
-  `Disponibilidad_Inventario_id` INT NOT NULL,
-  `Disponibilidad_Sucursal_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `Detalle_Venta` (
+  `Inventario_Sucursal_Inventario_id` INT NOT NULL,
+  `Inventario_Sucursal_Sucursal_id` INT NOT NULL,
   `Venta_id` INT NOT NULL,
   `cantidad` TINYINT NOT NULL,
-  `precio_unitario` DECIMAL NOT NULL,
-  `subtotal` DECIMAL NOT NULL,
-  PRIMARY KEY (`Disponibilidad_Inventario_id`, `Disponibilidad_Sucursal_id`, `Venta_id`),
+  `precio_unitario` DECIMAL(10,0) NOT NULL,
+  `subtotal` DECIMAL(10,0) NOT NULL,
+  PRIMARY KEY (`Inventario_Sucursal_Inventario_id`, `Inventario_Sucursal_Sucursal_id`, `Venta_id`),
   INDEX `fk_Disponibilidad_has_Venta_Venta1_idx` (`Venta_id` ASC) VISIBLE,
-  INDEX `fk_Disponibilidad_has_Venta_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
+  INDEX `fk_Disponibilidad_has_Venta_Disponibilidad1_idx` (`Inventario_Sucursal_Inventario_id` ASC, `Inventario_Sucursal_Sucursal_id` ASC) VISIBLE,
   CONSTRAINT `fk_Disponibilidad_has_Venta_Disponibilidad1`
-    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
+    FOREIGN KEY (`Inventario_Sucursal_Inventario_id` , `Inventario_Sucursal_Sucursal_id`)
+    REFERENCES `Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Disponibilidad_has_Venta_Venta1`
     FOREIGN KEY (`Venta_id`)
-    REFERENCES `novedades`.`Venta` (`id`)
+    REFERENCES `Venta` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `novedades`.`Intercambio`
+-- Table `Gasto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `novedades`.`Intercambio` ;
-
-CREATE TABLE IF NOT EXISTS `novedades`.`Intercambio` (
-  `id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `Gasto` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
-  `Disponibilidad_Inventario_id` INT NOT NULL,
-  `Disponibilidad_Sucursal_id` INT NOT NULL,
-  `Disponibilidad_Inventario_id1` INT NOT NULL,
-  `Disponibilidad_Sucursal_id1` INT NOT NULL,
+  `total` DOUBLE NOT NULL,
+  `descripcion` VARCHAR(100) NULL DEFAULT NULL,
+  `categoria_gasto` VARCHAR(45) NOT NULL,
+  `Usuario_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Gasto_Categoria_Gasto_idx` (`categoria_gasto` ASC) VISIBLE,
+  INDEX `fk_Gasto_Usuario1_idx` (`Usuario_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Gasto_Categoria_Gasto`
+    FOREIGN KEY (`categoria_gasto`)
+    REFERENCES `Categoria_Gasto` (`gasto`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Gasto_Usuario1`
+    FOREIGN KEY (`Usuario_id`)
+    REFERENCES `Usuario` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `Intercambio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Intercambio` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NOT NULL,
+  `Inventario_Sucursal_Inventario_id_cambio` INT NOT NULL,
+  `Inventario_Sucursal_Sucursal_id_cambio` INT NOT NULL,
+  `Inventario_Sucursal_Inventario_id_viejo` INT NOT NULL,
+  `Inventario_Sucursal_Sucursal_id_viejo` INT NOT NULL,
   `Venta_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Intercambio_Disponibilidad1_idx` (`Disponibilidad_Inventario_id` ASC, `Disponibilidad_Sucursal_id` ASC) VISIBLE,
-  INDEX `fk_Intercambio_Disponibilidad2_idx` (`Disponibilidad_Inventario_id1` ASC, `Disponibilidad_Sucursal_id1` ASC) VISIBLE,
+  INDEX `fk_Intercambio_Disponibilidad1_idx` (`Inventario_Sucursal_Inventario_id_cambio` ASC, `Inventario_Sucursal_Sucursal_id_cambio` ASC) VISIBLE,
+  INDEX `fk_Intercambio_Disponibilidad2_idx` (`Inventario_Sucursal_Inventario_id_viejo` ASC, `Inventario_Sucursal_Sucursal_id_viejo` ASC) VISIBLE,
   INDEX `fk_Intercambio_Venta1_idx` (`Venta_id` ASC) VISIBLE,
   CONSTRAINT `fk_Intercambio_Disponibilidad1`
-    FOREIGN KEY (`Disponibilidad_Inventario_id` , `Disponibilidad_Sucursal_id`)
-    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    FOREIGN KEY (`Inventario_Sucursal_Inventario_id_cambio` , `Inventario_Sucursal_Sucursal_id_cambio`)
+    REFERENCES `Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Intercambio_Disponibilidad2`
-    FOREIGN KEY (`Disponibilidad_Inventario_id1` , `Disponibilidad_Sucursal_id1`)
-    REFERENCES `novedades`.`Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    FOREIGN KEY (`Inventario_Sucursal_Inventario_id_viejo` , `Inventario_Sucursal_Sucursal_id_viejo`)
+    REFERENCES `Inventario_Sucursal` (`Inventario_id` , `Sucursal_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Intercambio_Venta1`
     FOREIGN KEY (`Venta_id`)
-    REFERENCES `novedades`.`Venta` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-  
+    REFERENCES `Venta` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 USE `novedades`;
 
 DELIMITER $$
-
 USE `novedades`$$
-DROP TRIGGER IF EXISTS `novedades`.`Inventario_BEFORE_INSERT` $$
-USE `novedades`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Inventario_BEFORE_INSERT` BEFORE INSERT ON `Inventario` FOR EACH ROW
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `novedades`.`Inventario_BEFORE_INSERT`
+BEFORE INSERT ON `novedades`.`Inventario`
+FOR EACH ROW
 BEGIN
 	IF EXISTS 
 		(SELECT * FROM `Inventario` 
@@ -411,11 +416,12 @@ BEGIN
 	END IF;
 END$$
 
-
 USE `novedades`$$
-DROP TRIGGER IF EXISTS `novedades`.`Conjunto_BEFORE_INSERT` $$
-USE `novedades`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Conjunto_BEFORE_INSERT` BEFORE INSERT ON `Conjunto` FOR EACH ROW
+CREATE
+DEFINER=`root`@`localhost`
+TRIGGER `novedades`.`Conjunto_BEFORE_INSERT`
+BEFORE INSERT ON `novedades`.`Conjunto`
+FOR EACH ROW
 BEGIN
     -- bundle color and size
 	DECLARE piece_color VARCHAR(20);
@@ -426,13 +432,11 @@ BEGIN
 
     -- get the bundle data and piece data
 
-    SELECT `compuesto` INTO is_conj FROM `novedades`.`Producto` WHERE `id`=new.inventario_id_conjunto;
+	SELECT `compuesto` INTO is_conj FROM `novedades`.`Producto` WHERE 
+		`id`= (SELECT `Prod_Talla_Producto_id` FROM `novedades`.`Inventario` WHERE `id` = new.inventario_id_conjunto);
 
-    SELECT `Prod_Talla_talla` INTO conj_size FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
-    SELECT `Prod_Talla_talla` INTO conj_size FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_conjunto;
-
-    SELECT `color` INTO piece_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
-    SELECT `color` INTO conj_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_conjunto;
+    SELECT `Prod_Talla_talla`, `color` INTO piece_size, piece_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_pieza;
+    SELECT `Prod_Talla_talla`, `color` INTO conj_size, conj_color FROM `novedades`.`Inventario` WHERE `id`=new.inventario_id_conjunto;
 
     -- compare
     IF(is_conj = 0) THEN
@@ -445,13 +449,7 @@ BEGIN
     END IF;
 END$$
 
-
 DELIMITER ;
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
 
 -- configuración de usuario que solo tendrá acceso a la BD que se creará
 

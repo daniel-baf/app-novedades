@@ -1,13 +1,8 @@
 package Backend;
 
-import Backend.DB.DAO.Usuario.AreaDAO;
-import Backend.DB.DAO.Usuario.UsuarioDAO;
-import Backend.DB.Domain.Usuario.Usuario;
-import Backend.Utils.AES256Encrypter;
+import Backend.Login.LoginChecker;
 
-import java.util.ArrayList;
-
-public class Main {
+public class Test {
     public static void main(String[] args) {
 
 //        bd
@@ -36,6 +31,10 @@ public class Main {
 //            user = uDao.select("123");
 //            System.out.printf("----\nUsuario: %1$s%n", user.toString());
 //            uDao.delete(user.getUsuario());
+
+            String user = "slr1";
+            String pswrd = "ventas123";
+            new LoginChecker().checkLogin(user,pswrd);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
