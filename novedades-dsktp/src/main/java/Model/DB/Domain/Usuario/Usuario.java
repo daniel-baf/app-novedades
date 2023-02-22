@@ -1,7 +1,7 @@
-package Backend.DB.Domain.Usuario;
+package Model.DB.Domain.Usuario;
 
-import Backend.Utils.AES256Encrypter;
-import Backend.Utils.CustomException;
+import Utils.AES256Encrypter;
+import Utils.CustomException;
 
 /**
  * Representación de un Usuario de la BD en Objeto de java
@@ -37,7 +37,7 @@ public class Usuario {
         try {
             this.usuario = usuario;
             this.nombre = nombre;
-            this.password = encrypt? AES256Encrypter.encrypt(password): password;
+            this.password = encrypt ? AES256Encrypter.encrypt(password) : password;
             this.area = area;
         } catch (Exception ignored) {
             System.out.println(CustomException.formatError(ignored.getMessage(), this.getClass()));

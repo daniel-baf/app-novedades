@@ -1,4 +1,4 @@
-package Backend.DB;
+package Model.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Genera una conexión con la base de datos
+ *
  * @author jefe_mayoneso
  */
 public class DBConnection {
@@ -22,17 +23,18 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(MYSQl_URL, MYSQL_USER, MYSQL_PASSWORD);
         } catch (SQLException | ClassNotFoundException ex) {
-            System.out.println("No se ha podido generar la conexión a la base de datos en la clase " + this.getClass().getName() + " error"  + ex.getMessage());
+            System.out.println("No se ha podido generar la conexión a la base de datos en la clase " + this.getClass().getName() + " error" + ex.getMessage());
         }
     }
 
     /**
      * Genera una conexión a base de datos que siempre estará abierta, para evitar estár generando conexiones en cada
      * momento
+     *
      * @return la conexión a la base de datos
      */
     public static Connection getConnection() {
-        if(connection == null) new DBConnection();
+        if (connection == null) new DBConnection();
         return connection;
     }
 }

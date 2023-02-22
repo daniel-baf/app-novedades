@@ -164,13 +164,15 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `Sucursal`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Sucursal` (
+
+CREATE TABLE IF NOT EXISTS `novedades`.`Sucursal` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NOT NULL,
   `telefono` VARCHAR(9) NULL DEFAULT NULL,
   `direccion` VARCHAR(55) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE)
+  UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE,
+  UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;

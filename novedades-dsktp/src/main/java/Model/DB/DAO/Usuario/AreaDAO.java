@@ -1,8 +1,8 @@
-package Backend.DB.DAO.Usuario;
+package Model.DB.DAO.Usuario;
 
-import Backend.DB.DBConnection;
-import Backend.DB.DAO.SQL_SENTENCES;
-import Backend.Utils.CustomException;
+import Model.DB.DBConnection;
+import Model.DB.DAO.SQL_SENTENCES;
+import Utils.CustomException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +13,7 @@ public class AreaDAO {
 
     /**
      * Inserta en la BD un campo de Area
+     *
      * @param area el area
      * @return el resultado, 1 si hubo exito
      * @throws Exception en caso no se complete la operación
@@ -29,6 +30,7 @@ public class AreaDAO {
 
     /**
      * Selecciona todos los elementos de la tabla
+     *
      * @return listado de todas las areas
      */
     public ArrayList<String> select() throws Exception {
@@ -47,12 +49,13 @@ public class AreaDAO {
 
     /**
      * Borra un Area de la base de datos
+     *
      * @param area el area a borrar
      * @return el numero de filas afectadas
      * @throws Exception el error, en caso ocurra un error
      */
     public int delete(String area) throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.DELETE_AREA.getSentence())){
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.DELETE_AREA.getSentence())) {
             ps.setString(1, area);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -63,6 +66,7 @@ public class AreaDAO {
     /**
      * Convierte los datos del ResultSet en un String, pero podria editarse para
      * convertirlo a un objeto de tipo <T> o <C>
+     *
      * @param rs ResultSet
      * @return el dato obtenido de la BD
      * @throws SQLException el error en SQL que se pueda generar

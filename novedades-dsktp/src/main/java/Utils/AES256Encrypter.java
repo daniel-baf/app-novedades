@@ -1,4 +1,4 @@
-package Backend.Utils;
+package Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -19,6 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Clase que se encarga de encriptar texto plano
+ *
  * @author jefe_mayoneso
  */
 public class AES256Encrypter {
@@ -31,6 +32,7 @@ public class AES256Encrypter {
 
     /**
      * Encripta un texto de entrada y devuelve el mismo texto encriptado con SHA256
+     *
      * @param strToEncrypt palabra a encriptar
      * @return palabra encriptada
      */

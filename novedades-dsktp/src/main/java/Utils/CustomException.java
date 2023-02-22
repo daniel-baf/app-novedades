@@ -1,4 +1,4 @@
-package Backend.Utils;
+package Utils;
 
 public class CustomException extends Exception {
 
