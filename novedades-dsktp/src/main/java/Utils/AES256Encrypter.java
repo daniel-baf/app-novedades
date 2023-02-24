@@ -51,7 +51,7 @@ public class AES256Encrypter {
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8)));
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | NoSuchAlgorithmException |
                  InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
-            throw new Exception("No se ha podido generar una contraseña valida");
+            throw new Exception(CustomException.formatError("No se ha podido generar una contraseña valida", AES256Encrypter.class));
         }
     }
 }

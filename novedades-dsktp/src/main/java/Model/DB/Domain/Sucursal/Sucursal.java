@@ -1,5 +1,9 @@
 package Model.DB.Domain.Sucursal;
 
+/**
+ * Esta clase representa la entidad Sucursal en la base de datos
+ * @author jefe_mayoneso
+ */
 public class Sucursal {
     private int id;
     private String name;

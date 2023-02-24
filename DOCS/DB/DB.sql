@@ -21,9 +21,7 @@ USE `novedades` ;
 CREATE TABLE IF NOT EXISTS `Area` (
   `id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -32,9 +30,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `Categoria_Gasto` (
   `gasto` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`gasto`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -44,9 +40,7 @@ CREATE TABLE IF NOT EXISTS `Cliente_Especial` (
   `id` VARCHAR(10) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -55,9 +49,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `Color` (
   `color` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`color`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -69,9 +61,7 @@ CREATE TABLE IF NOT EXISTS `Producto` (
   `compuesto` TINYINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -80,9 +70,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `Talla` (
   `talla` VARCHAR(4) NOT NULL,
   PRIMARY KEY (`talla`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -106,9 +94,7 @@ CREATE TABLE IF NOT EXISTS `Prod_Talla` (
     REFERENCES `Talla` (`talla`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -132,9 +118,7 @@ CREATE TABLE IF NOT EXISTS `Inventario` (
     REFERENCES `Prod_Talla` (`Producto_id` , `talla`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -156,9 +140,7 @@ CREATE TABLE IF NOT EXISTS `Conjunto` (
     REFERENCES `Inventario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -173,9 +155,7 @@ CREATE TABLE IF NOT EXISTS `novedades`.`Sucursal` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `direccion_UNIQUE` (`direccion` ASC) VISIBLE,
   UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -198,9 +178,7 @@ CREATE TABLE IF NOT EXISTS `Inventario_Sucursal` (
     REFERENCES `Sucursal` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -218,9 +196,7 @@ CREATE TABLE IF NOT EXISTS `Usuario` (
     REFERENCES `Area` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -237,9 +213,7 @@ CREATE TABLE IF NOT EXISTS `Envio` (
     REFERENCES `Usuario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -270,9 +244,7 @@ CREATE TABLE IF NOT EXISTS `Detalle_Envio` (
     REFERENCES `Sucursal` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -300,9 +272,7 @@ CREATE TABLE IF NOT EXISTS `Venta` (
     REFERENCES `Usuario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -328,9 +298,7 @@ CREATE TABLE IF NOT EXISTS `Detalle_Venta` (
     REFERENCES `Venta` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -356,9 +324,7 @@ CREATE TABLE IF NOT EXISTS `Gasto` (
     REFERENCES `Usuario` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -391,9 +357,7 @@ CREATE TABLE IF NOT EXISTS `Intercambio` (
     REFERENCES `Venta` (`id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

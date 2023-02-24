@@ -1,7 +1,9 @@
 package Model.DB.DAO.Usuario;
 
+import Model.DB.DAO.SQL.SQL_DELETE;
+import Model.DB.DAO.SQL.SQL_INSERT;
+import Model.DB.DAO.SQL.SQL_SELECT;
 import Model.DB.DBConnection;
-import Model.DB.DAO.SQL_SENTENCES;
 import Utils.CustomException;
 
 import java.sql.PreparedStatement;
@@ -20,7 +22,7 @@ public class AreaDAO {
      */
     public int insert(String area) throws Exception {
         // Intenta actualizar la BD, si hay error, devuelve una excepcon
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.INSERT_USER.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_INSERT.USER.getSentence())) {
             ps.setString(1, area);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -34,7 +36,7 @@ public class AreaDAO {
      * @return listado de todas las areas
      */
     public ArrayList<String> select() throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.SELECT_AREA_ALL.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.AREA_ALL.getSentence())) {
             ArrayList<String> data = new ArrayList<>();
             // como no hay ? en el SQL, ejecutamos ResulSet, de lo contrario deberiamos usar ps.Set...
             ResultSet rs = ps.executeQuery();
@@ -55,7 +57,7 @@ public class AreaDAO {
      * @throws Exception el error, en caso ocurra un error
      */
     public int delete(String area) throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.DELETE_AREA.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_DELETE.AREA.getSentence())) {
             ps.setString(1, area);
             return ps.executeUpdate();
         } catch (Exception e) {

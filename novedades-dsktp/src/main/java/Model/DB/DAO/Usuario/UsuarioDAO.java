@@ -1,6 +1,6 @@
 package Model.DB.DAO.Usuario;
 
-import Model.DB.DAO.SQL_SENTENCES;
+import Model.DB.DAO.SQL.*;
 import Model.DB.DBConnection;
 import Model.DB.Domain.Usuario.Usuario;
 import Utils.CustomException;
@@ -19,7 +19,7 @@ public class UsuarioDAO {
      */
     public int insert(Usuario usuario) throws Exception {
         // Intenta actualizar la BD, si hay error, devuelve una excepcion
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.INSERT_USER.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_INSERT.USER.getSentence())) {
             ps.setString(1, usuario.getUsuario());
             ps.setString(2, usuario.getNombre());
             ps.setString(3, usuario.getPassword());
@@ -38,7 +38,7 @@ public class UsuarioDAO {
      * @throws Exception el error en caso ocurra
      */
     public Usuario select(String username) throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.SELECT_USER.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.USER.getSentence())) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             return rs.next() ? getUserFromRS(rs) : null;
@@ -55,7 +55,7 @@ public class UsuarioDAO {
      * @throws Exception en caso exista un error
      */
     public int update(Usuario user) throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.UPDATE_USER.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_UPDATE.USER.getSentence())) {
             ps.setString(1, user.getNombre());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getArea());
@@ -88,7 +88,7 @@ public class UsuarioDAO {
     }
 
     public int delete(String usuario) throws Exception {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SENTENCES.DELETE_USER.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_DELETE.USER.getSentence())) {
             ps.setString(1, usuario);
             return ps.executeUpdate();
         } catch (Exception e) {

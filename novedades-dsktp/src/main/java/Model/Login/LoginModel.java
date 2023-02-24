@@ -23,11 +23,11 @@ public class LoginModel {
     }
 
     /**
-     * Get all data needed for Login view
+     * Obtiene toda la informacion ecesaria para la vista de LOgin
      */
     private void setup() {
         try {
-            this.salesDepratments = new SucursalDAO().selectAll();
+            this.salesDepratments = new SucursalDAO().select();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

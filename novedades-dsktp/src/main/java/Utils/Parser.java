@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 /**
- * Clase que se encarga de convertir (parsera) tipos de datos compatibles entre Java y MySQL, ej. Date -> LocalDate
+ * Esta clase sirve para hacer casteos entre ciertos tipos de datos de SQL a JAVA
+ *
+ * @author jefe_mayoneso
  */
 public class Parser {
 
