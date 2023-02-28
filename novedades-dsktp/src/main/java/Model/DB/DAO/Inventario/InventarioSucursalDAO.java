@@ -1,16 +1,47 @@
 package Model.DB.DAO.Inventario;
 
 import Model.DB.DAO.SQL.SQL_SELECT;
+import Model.DB.DAO.SQL.SQL_SENTENCE;
 import Model.DB.DAO.Sucursal.SucursalDAO;
 import Model.DB.DBConnection;
 import Model.DB.Domain.Inventario.InventarioSucursal;
 import Model.DB.Domain.Sucursal.Sucursal;
+import Utils.CustomException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+/**
+ * Esta clase sirve para hacer consultas a la base de datos respecto a la entidad InventarioSucursal
+ *
+ * @author jefe_mayoneso
+ */
 public class InventarioSucursalDAO {
+
+    /**
+     * Selecciona una lista de inventario por sucursal
+     *
+     * @param salesDepartment
+     * @param bySalesDepartment
+     * @return
+     */
+    public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean bySalesDepartment) {
+        return this.select(salesDepartment, bySalesDepartment, false, false, 0, 0);
+    }
+
+    /**
+     * Selecciona una lista de inventario por sucursal
+     *
+     * @param salesDepartment
+     * @param useOffset
+     * @param useLimit
+     * @param offset
+     * @return
+     */
+    public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean useOffset, Boolean useLimit, int offset, int limit) {
+        return this.select(salesDepartment, false, useLimit, useOffset, offset, limit);
+    }
 
     /**
      * Este metodo busca en la base de datos toda la informacion relacionada a un producto
@@ -19,27 +50,43 @@ public class InventarioSucursalDAO {
      * @param salesDepartment   nulo si se quiere buscar en todas las tiendas, o la tienda si se desea buscar
      *                          una en especifico
      * @param bySalesDepartment true si se desea buscar la existencia de una tienda
+     * @param useLimit          si se desea poner un limite en el numero de filas por consulta
+     * @param useOffset         si se desea mover en la linea de inicio de la consulta
+     * @param offset
+     * @param limit
      * @return el listado de productos disponibles
      */
-    public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean bySalesDepartment) {
+    public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean bySalesDepartment, Boolean useLimit, Boolean useOffset, int offset, int limit) {
         ArrayList<InventarioSucursal> invAvailability = new ArrayList<>();
         // modifica el SQL para elegir entre todas las sucursales o una en especifico
         String SQL_TMP = SQL_SELECT.INVENTARIO_SUCURSAL.getSentence();
-        SQL_TMP += bySalesDepartment ? SQL_SELECT.INVENTARIO_SUUCRSAL_ADD_ID.getSentence() : "";
+        // configuramos las consultas extra para usar un mismo metodo para todo
+        SQL_TMP += bySalesDepartment ? SQL_SELECT.INVENTARIO_SUCURSAL_ADD_ID.getSentence() : "";
+        SQL_TMP += useLimit ? SQL_SENTENCE.LIMIT : "";
+        SQL_TMP += useOffset ? SQL_SENTENCE.OFFSET : "";
+        int tmpSQLCounter = 1;
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_TMP)) {
-            if(bySalesDepartment) ps.setInt(1, salesDepartment.getId()); // configura la sucursal que se desea buscar
+            // configuramos todos los posibles datos opcionales
+            if (bySalesDepartment) ps.setInt(tmpSQLCounter++, salesDepartment.getId());
+            if (useLimit) ps.setInt(tmpSQLCounter++, limit); // usamos como limite 100 filas para esta consulta
+            if (useOffset) ps.setInt(tmpSQLCounter++, offset);
             // ejecuta sentencia SQL y obtiene los datos
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                getInventarioSucursalFromRS(rs);
+            while (rs.next()) {
+                invAvailability.add(getInventarioSucursalFromRS(rs));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
         }
         return invAvailability;
     }
 
+    /**
+     * Obtiene el objeto a partir de un Result Set
+     *
+     * @param rs ResultSet
+     * @return el objeto obtenido del rs si existe
+     */
     private InventarioSucursal getInventarioSucursalFromRS(ResultSet rs) {
         // creamos los objetos pertinentes con los datos obtenidos
         try {
@@ -47,10 +94,9 @@ public class InventarioSucursalDAO {
             // obtenemos la sucursal y el inventario de cada elemento
             tmpInventorySuc.setSucursal(new SucursalDAO().select(rs.getInt("Sucursal_id")));
             tmpInventorySuc.setInventory(new InventarioDAO().select(rs.getInt("Inventario_id")));
-            System.out.println(tmpInventorySuc.toString());
+            return tmpInventorySuc;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
         }
         return null;
     }

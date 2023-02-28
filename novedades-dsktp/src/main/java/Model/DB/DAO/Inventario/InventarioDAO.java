@@ -8,6 +8,11 @@ import Model.DB.Domain.Inventario.Inventario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Esta clase sirve para controlar las consultas a base de datos de un Inventario
+ *
+ * @author jefe_mayoneso
+ */
 public class InventarioDAO {
 
     public Inventario select(int id) {

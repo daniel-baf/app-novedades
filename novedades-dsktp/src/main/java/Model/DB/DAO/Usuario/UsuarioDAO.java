@@ -8,6 +8,11 @@ import Utils.CustomException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Clase usada para generar consultas relacionadas con la entidad Usuario
+ *
+ * @author colaborativo
+ */
 public class UsuarioDAO {
 
     /**

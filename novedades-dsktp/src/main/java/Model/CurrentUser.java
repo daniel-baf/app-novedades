@@ -3,6 +3,11 @@ package Model;
 import Model.DB.Domain.Sucursal.Sucursal;
 import Model.DB.Domain.Usuario.Usuario;
 
+/**
+ * Puesto que el Usuario puede rotar de tienda, al logueqrse marca su ifnromacion
+ * y esta es guardada en RAM para futuras consultas
+ * @author jefe mayoneso
+ */
 public class CurrentUser {
 
     private static Usuario USER;
@@ -25,9 +30,7 @@ public class CurrentUser {
     }
 
     public static String print() {
-        return "USUARIO ACTUAL\n" +
-            USER.toString() + "\n" +
-            SALES_DEPARTMENT.toString();
+        return "USUARIO ACTUAL\n" + USER.toString() + "\n" + SALES_DEPARTMENT.toString();
     }
 
 

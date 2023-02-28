@@ -8,20 +8,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Esta clase sirve para hacer consultas de productos en la base de datos
+ *
+ * @author jefe_mayoneso
+ */
 public class ProductoDAO {
 
     public Producto select(int id) {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.PRODUCTO.getSentence() + SQL_SELECT.PRODUCTO_ADD_ID.getSentence())){
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.PRODUCTO.getSentence() + SQL_SELECT.PRODUCTO_ADD_ID.getSentence())) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) return getProductoFromRS(rs);
-        }catch (Exception e) {
+            if (rs.next()) return getProductoFromRS(rs);
+        } catch (Exception e) {
             System.out.println("No se ha podido seleccionar un producto");
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * Genera un objeto de tipo Producto a partir de un Result Set
+     *
+     * @param rs
+     * @return
+     */
     private Producto getProductoFromRS(ResultSet rs) {
         try {
             return new Producto(rs.getInt("id"), rs.getString("nombre"), rs.getInt("compuesto"));

@@ -8,6 +8,11 @@ import View.Login.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Esta clase es el controlador para el login
+ *
+ * @author jefe_mayoneso
+ */
 public class LoginController implements ActionListener {
 
     private final LoginView view;
@@ -28,6 +33,7 @@ public class LoginController implements ActionListener {
         this.view.setTitle("Ventana de logueo");
         this.view.setLocationRelativeTo(null);
         this.view.setResizable(false);
+        this.view.setVisible(true);
     }
 
 
@@ -36,7 +42,7 @@ public class LoginController implements ActionListener {
      */
     private void configList() {
         try {
-             this.model.getSalesDepratments().forEach( department -> this.view.salesDepJComboBox.addItem(department.getName()));
+            this.model.getSalesDepratments().forEach(department -> this.view.salesDepJComboBox.addItem(department.getName()));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

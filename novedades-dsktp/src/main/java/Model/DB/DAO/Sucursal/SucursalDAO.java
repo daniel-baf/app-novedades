@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Clase para hacer consultas a la BD respecto a la entidad Sucursal
+ *
+ * @author colaborativo
+ */
 public class SucursalDAO {
 
     public ArrayList<Sucursal> select() throws Exception {
@@ -41,9 +46,9 @@ public class SucursalDAO {
 
     private Sucursal getSalesDepFromRS(ResultSet rs) {
         try {
-            return new Sucursal(rs.getInt("id"),rs.getString("nombre"), rs.getString("telefono"), rs.getString("direccion"));
+            return new Sucursal(rs.getInt("id"), rs.getString("nombre"), rs.getString("telefono"), rs.getString("direccion"));
         } catch (Exception e) {
-            return  null;
+            return null;
         }
     }
 

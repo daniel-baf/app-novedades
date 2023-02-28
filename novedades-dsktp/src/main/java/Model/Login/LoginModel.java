@@ -36,8 +36,6 @@ public class LoginModel {
     /**
      * Checa si el usuario ingresado es valido o no
      *
-     * @param user     el usuario ingresado
-     * @param password la contraseña ingresada
      * @return true o false si las credenciales son correctas o no
      */
     public boolean login() {

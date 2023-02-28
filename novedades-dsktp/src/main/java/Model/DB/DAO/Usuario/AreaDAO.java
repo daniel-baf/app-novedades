@@ -11,6 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Clase usada par generar consultas a la BD relacionadas con el Area
+ *
+ * @author colaborativo
+ */
 public class AreaDAO {
 
     /**

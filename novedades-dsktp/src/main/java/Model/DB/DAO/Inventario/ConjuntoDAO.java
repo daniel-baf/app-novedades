@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 /**
  * DAO para entidad Conjunto
+ *
+ * @author jefe_mayoneso
  */
 public class ConjuntoDAO {
 
