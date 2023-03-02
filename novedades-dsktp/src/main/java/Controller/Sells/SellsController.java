@@ -1,5 +1,6 @@
-package Controller;
+package Controller.Sells;
 
+import Controller.Sells.SellsTable;
 import Model.Sells.SellsModel;
 import View.Ventas.VentaJDialog;
 
@@ -43,8 +44,8 @@ public class SellsController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         // revisamos que boton ha generado el evento
-        if (ae.getSource() == this.view.loadMoreJButton)
-            this.sellsTableController.loadMoreIntoTable(this.view, this.model);
+        if (ae.getSource() == this.view.loadMoreJButton) this.sellsTableController.loadMoreIntoTable(this.view, this.model);
+//        else if (ae.getSource() == this.view.searchJButton )
     }
 
 }

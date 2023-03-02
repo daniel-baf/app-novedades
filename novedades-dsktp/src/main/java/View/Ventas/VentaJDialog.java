@@ -43,7 +43,6 @@ public class VentaJDialog extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         addToCartJButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        setupSpecialClientJButton = new javax.swing.JButton();
         loadMoreJButton = new javax.swing.JButton();
         sellsSectionJPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -53,6 +52,12 @@ public class VentaJDialog extends javax.swing.JFrame {
         specialClientJLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         checkoutJButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        optionsJMenu = new javax.swing.JMenu();
+        specialClientJMenuButotn = new javax.swing.JMenuItem();
+        sortAllShopsJMenuButotn = new javax.swing.JCheckBoxMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,7 +113,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -116,6 +121,10 @@ public class VentaJDialog extends javax.swing.JFrame {
 
         jLabel1.setText("Cantidad");
         jPanel3.add(jLabel1);
+
+        jTextField1.setText("1");
+        jTextField1.setMinimumSize(new java.awt.Dimension(100, 25));
+        jTextField1.setPreferredSize(new java.awt.Dimension(100, 25));
         jPanel3.add(jTextField1);
 
         addToCartJButton.setText("AGREGAR");
@@ -124,9 +133,6 @@ public class VentaJDialog extends javax.swing.JFrame {
         inventoryAddSectionPanel.add(jPanel3);
 
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        setupSpecialClientJButton.setText("Cliente E");
-        jPanel4.add(setupSpecialClientJButton);
 
         loadMoreJButton.setText("CARGAR MAS");
         jPanel4.add(loadMoreJButton);
@@ -137,7 +143,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         inventoryListSectionJPanel.setLayout(inventoryListSectionJPanelLayout);
         inventoryListSectionJPanelLayout.setHorizontalGroup(
             inventoryListSectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(inventoryAddSectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+            .addComponent(inventoryAddSectionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         inventoryListSectionJPanelLayout.setVerticalGroup(
@@ -156,7 +162,7 @@ public class VentaJDialog extends javax.swing.JFrame {
                 .addGroup(inventorySectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventorySectionJPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
                     .addComponent(inventoryListSectionJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -174,10 +180,7 @@ public class VentaJDialog extends javax.swing.JFrame {
 
         cartlistJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID prenda", "Nombre", "Precio", "Cantidad"
@@ -224,7 +227,7 @@ public class VentaJDialog extends javax.swing.JFrame {
                 .addComponent(totalJLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(specialClientJLabel)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         checkoutJButton.setText("PROCEDER VENTA");
@@ -237,7 +240,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             .addGroup(sellsSectionJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sellsSectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -253,11 +256,35 @@ public class VentaJDialog extends javax.swing.JFrame {
 
         containerJPanel.add(sellsSectionJPanel);
 
+        optionsJMenu.setText("Opciones");
+        optionsJMenu.setToolTipText("");
+
+        specialClientJMenuButotn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        specialClientJMenuButotn.setText("Cliente especial");
+        specialClientJMenuButotn.setToolTipText("Ingresa el codigo de cliente especial para descuentos");
+        optionsJMenu.add(specialClientJMenuButotn);
+
+        sortAllShopsJMenuButotn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        sortAllShopsJMenuButotn.setText("Todas las tiendas");
+        sortAllShopsJMenuButotn.setToolTipText("Busca items en todas las tiendas, no solo la actual");
+        optionsJMenu.add(sortAllShopsJMenuButotn);
+
+        jMenuBar1.add(optionsJMenu);
+
+        jMenu2.setText("Edit");
+
+        jMenuItem1.setText("jMenuItem1");
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(containerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
+            .addComponent(containerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,6 +305,9 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JPanel inventorySectionJPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -287,13 +317,15 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextField jTextField1;
     public javax.swing.JButton loadMoreJButton;
+    public javax.swing.JMenu optionsJMenu;
     public javax.swing.JTable productsResultJTable;
     public javax.swing.JButton searchJButton;
     public javax.swing.JTextField searchJTextField;
     public javax.swing.JComboBox<String> searchTypeJButton;
     private javax.swing.JPanel sellsSectionJPanel;
-    public javax.swing.JButton setupSpecialClientJButton;
+    public javax.swing.JCheckBoxMenuItem sortAllShopsJMenuButotn;
     public javax.swing.JLabel specialClientJLabel;
+    private javax.swing.JMenuItem specialClientJMenuButotn;
     public javax.swing.JLabel totalJLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -42,7 +42,7 @@ public class InventarioSucursalDAO {
     public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean useOffset, Boolean useLimit, int offset, int limit) {
         return this.select(salesDepartment, false, useLimit, useOffset, offset, limit);
     }
-
+    
     /**
      * Este metodo busca en la base de datos toda la informacion relacionada a un producto
      * Este metodo puede buscar en todas las tiendas, o en una tienda en especifico
@@ -61,7 +61,7 @@ public class InventarioSucursalDAO {
         // modifica el SQL para elegir entre todas las sucursales o una en especifico
         String SQL_TMP = SQL_SELECT.INVENTARIO_SUCURSAL.getSentence();
         // configuramos las consultas extra para usar un mismo metodo para todo
-        SQL_TMP += bySalesDepartment ? SQL_SELECT.INVENTARIO_SUCURSAL_ADD_ID.getSentence() : "";
+        SQL_TMP += bySalesDepartment ?  SQL_SELECT.WHERE.getSentence() + SQL_SELECT.INVENTARIO_SUCURSAL_ADD_SUC_ID.getSentence() : "";
         SQL_TMP += useLimit ? SQL_SENTENCE.LIMIT : "";
         SQL_TMP += useOffset ? SQL_SENTENCE.OFFSET : "";
         int tmpSQLCounter = 1;
@@ -80,7 +80,7 @@ public class InventarioSucursalDAO {
         }
         return invAvailability;
     }
-
+    
     /**
      * Obtiene el objeto a partir de un Result Set
      *

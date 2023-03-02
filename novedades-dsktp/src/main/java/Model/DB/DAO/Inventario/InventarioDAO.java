@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 public class InventarioDAO {
 
     public Inventario select(int id) {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.INVENTARIO.getSentence() + SQL_SELECT.INVENTARIO_ADD_ID.getSentence())) {
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.INVENTARIO.getSentence() + SQL_SELECT.WHERE.getSentence() +  SQL_SELECT.INVENTARIO_ADD_ID.getSentence())) {
             // configuramos el PS en caso sea por id
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

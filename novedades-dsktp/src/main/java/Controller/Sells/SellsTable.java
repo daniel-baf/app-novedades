@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Controller;
+package Controller.Sells;
 
 import Model.CurrentUser;
 import Model.DB.DAO.Inventario.InventarioSucursalDAO;
@@ -11,7 +7,6 @@ import Model.Sells.SellsModel;
 import Utils.CustomException;
 import View.Ventas.VentaJDialog;
 
-import java.awt.Event;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.RowSorter;
@@ -46,7 +41,7 @@ public class SellsTable {
                         item.getInventory().getId(), // id del inventario, identifica la pieza, talla y color
                         item.getInventory().getColor().getColor(), // color
                         item.getInventory().getProductoTalla().getProduct().getName(), // el nombre de la pieza
-                        item.getInventory().getProductoTalla().getSize(), // la talla
+                        item.getInventory().getProductoTalla().getSize().getSize(), // la talla
                         item.getInventory().getProductoTalla().getPrice(), // precio normal
                         item.getInventory().getProductoTalla().getSpecialPrice(), // precio clientes especiales
                         item.getSucursal().getDirection() // la tienda donde se encuentra, en esta ventana solo mostrara items de CurrentUser.SalesDep   
@@ -67,6 +62,11 @@ public class SellsTable {
         }
     }
 
+    /**
+     * Carga mas elementos de la base de datos a la tabla con los productos
+     * @param view
+     * @param model 
+     */
     public void loadMoreIntoTable(VentaJDialog view, SellsModel model) {
         try {
             // recibimos la nueva lista
