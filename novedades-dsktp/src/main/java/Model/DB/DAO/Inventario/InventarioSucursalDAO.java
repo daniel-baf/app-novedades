@@ -61,7 +61,7 @@ public class InventarioSucursalDAO {
         // modifica el SQL para elegir entre todas las sucursales o una en especifico
         String SQL_TMP = SQL_SELECT.INVENTARIO_SUCURSAL.getSentence();
         // configuramos las consultas extra para usar un mismo metodo para todo
-        SQL_TMP += bySalesDepartment ?  SQL_SELECT.WHERE.getSentence() + SQL_SELECT.INVENTARIO_SUCURSAL_ADD_SUC_ID.getSentence() : "";
+        SQL_TMP += bySalesDepartment ? SQL_SELECT.WHERE +  SQL_SELECT.INVENTARIO_SUCURSAL_ADD_SUC_ID.getSentence() : "";
         SQL_TMP += useLimit ? SQL_SENTENCE.LIMIT : "";
         SQL_TMP += useOffset ? SQL_SENTENCE.OFFSET : "";
         int tmpSQLCounter = 1;
@@ -76,7 +76,7 @@ public class InventarioSucursalDAO {
                 invAvailability.add(getInventarioSucursalFromRS(rs));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
         }
         return invAvailability;
     }

@@ -31,7 +31,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         inventorySearchJPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         searchJTextField = new javax.swing.JTextField();
-        searchTypeJButton = new javax.swing.JComboBox<>();
+        searchTypeJComboBox = new javax.swing.JComboBox<>();
         searchJButton = new javax.swing.JButton();
         inventoryListSectionJPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -69,8 +69,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         searchJTextField.setPreferredSize(new java.awt.Dimension(100, 25));
         inventorySearchJPanel.add(searchJTextField);
 
-        searchTypeJButton.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id prenda", "Color", "Nombre prenda", "Talla" }));
-        inventorySearchJPanel.add(searchTypeJButton);
+        inventorySearchJPanel.add(searchTypeJComboBox);
 
         searchJButton.setText("Buscar");
         inventorySearchJPanel.add(searchJButton);
@@ -80,14 +79,14 @@ public class VentaJDialog extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id Pieza", "Color", "Producto", "Talla", "Precio", "Precio 2", "Sucursal"
+                "Id Pieza", "Color", "Producto", "Talla", "Precio", "Precio 2", "Sucursal", "Stock"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -321,11 +320,11 @@ public class VentaJDialog extends javax.swing.JFrame {
     public javax.swing.JTable productsResultJTable;
     public javax.swing.JButton searchJButton;
     public javax.swing.JTextField searchJTextField;
-    public javax.swing.JComboBox<String> searchTypeJButton;
+    public javax.swing.JComboBox<String> searchTypeJComboBox;
     private javax.swing.JPanel sellsSectionJPanel;
     public javax.swing.JCheckBoxMenuItem sortAllShopsJMenuButotn;
     public javax.swing.JLabel specialClientJLabel;
-    private javax.swing.JMenuItem specialClientJMenuButotn;
+    public javax.swing.JMenuItem specialClientJMenuButotn;
     public javax.swing.JLabel totalJLabel;
     // End of variables declaration//GEN-END:variables
 }

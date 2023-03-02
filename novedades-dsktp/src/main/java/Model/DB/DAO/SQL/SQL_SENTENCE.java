@@ -7,6 +7,9 @@ package Model.DB.DAO.SQL;
  */
 public interface SQL_SENTENCE {
 
+        // GENERAL
+   String  WHERE = " WHERE ";
+   String AND = " AND ";
     String LIMIT = " LIMIT ? ";
     String OFFSET = " OFFSET ? ";
 

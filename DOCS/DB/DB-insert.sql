@@ -30,15 +30,15 @@ INSERT INTO `novedades`.`Talla` (`talla`) VALUES
 -- SUCURSAL
 
 INSERT INTO `novedades`.`Sucursal` (`direccion`, `nombre`, `telefono`) VALUES
-	('5 calle 10-64', 'Local 1 Centro Comercial', '77601234'), 
-	('12 av 10-56', 'Central', '77604321');
+	('5 calle 10-64', 'local 1 centro comercial', '77601234'), 
+	('12 av 10-56', 'central', '77604321');
 
 -- USUARIOS
 
 INSERT INTO `novedades`.`Usuario` (`id`, `nombre`, `password`, `Area_id`) VALUES
-	('vnt1', 'Pepe Aguilar', 'nyAxukqFV5aEea67GUHbwg==', 'ventas'), -- pass: ventas123
-	('adm1', 'Andrea Barilla', '9RP8WZOSpXTZRksFnnjWvA==', 'administrativo'), -- pass: admin123,
-    ('opr1', 'Jose Rodriguez', 'kHd/LorCm4ubE50LPiNrkQ==', 'operativo'); -- pass: ope123
+	('vnt1', 'pepe aguilar', 'nyAxukqFV5aEea67GUHbwg==', 'ventas'), -- pass: ventas123
+	('adm1', 'andrea barilla', '9RP8WZOSpXTZRksFnnjWvA==', 'administrativo'), -- pass: admin123,
+    ('opr1', 'jose rodriguez', 'kHd/LorCm4ubE50LPiNrkQ==', 'operativo'); -- pass: ope123
 
 -- GASTOS
 
@@ -157,6 +157,6 @@ INSERT INTO `novedades`.`Intercambio` (`fecha`, `Inventario_Sucursal_Inventario_
 	('2022-10-13', '1', '1', '2', '1', '1');
 -- generar nueva venta
 INSERT INTO `novedades`.`Venta` (`fecha`, `nit`, `nombre`, `total`, `Usuario_id`, `Cliente_Especial_id`) VALUES
-	('2019-12-10', '12345678', 'Juanito', 72, 'vnt1', 'esp1');
+	('2019-12-10', '12345678', 'juanito', 72, 'vnt1', 'esp1');
 INSERT INTO `novedades`.`Detalle_Venta` (`Inventario_Sucursal_Inventario_id`, `Inventario_Sucursal_Sucursal_id`, `Venta_id`, `cantidad`, `precio_unitario`, `subtotal`) VALUES
 	(2, 1, 5, 1, 72, 72);

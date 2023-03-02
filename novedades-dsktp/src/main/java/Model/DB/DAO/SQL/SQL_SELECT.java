@@ -6,17 +6,14 @@ package Model.DB.DAO.SQL;
  * @author colaborativo
  */
 public enum SQL_SELECT implements SQL_SENTENCE {
-    // GENERAL
-    WHERE(" WHERE "),
-    AND(" AND "),
     // USUSARIOS
     USER("SELECT * FROM novedades.Usuario WHERE id=? "),
     // SUCURSAL
     SUCURSAL_ALL("SELECT * FROM novedades.Sucursal "),
     SUCURSAL_ADD_ID(" WHERE `id` = ? "),
     // INVENTARIO SUCURSAL
-    INVENTARIO_SUCURSAL("SELECT * FROM `novedades`.`Inventario_Sucursal` "),
-    INVENTARIO_SUCURSAL_ADD_SUC_ID(" `Sucursal_id` = ? "),
+    INVENTARIO_SUCURSAL("SELECT * FROM `novedades`.`Inventario_Sucursal` AS `is` "),
+    INVENTARIO_SUCURSAL_ADD_SUC_ID(" `is`.`Sucursal_id` = ? "),
     INVENTARIO_SUCURSAL_BY_ID("SELECT * FROM `novedades`.`Inventario_Sucursal` WHERE `Inventario_Id`"),
     // INVENTARIO
     INVENTARIO("SELECT * FROM novedades.Inventario "),

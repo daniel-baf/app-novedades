@@ -1,7 +1,5 @@
 package Model.Sells;
 
-import Model.CurrentUser;
-import Model.DB.DAO.Inventario.InventarioSucursalDAO;
 import Model.DB.Domain.Inventario.InventarioSucursal;
 
 import java.util.ArrayList;
@@ -14,28 +12,25 @@ import java.util.ArrayList;
 public class SellsModel {
 
     ArrayList<InventarioSucursal> availableProductos;
-    InventarioSucursalDAO invSucDAO;
 
     private int offset; // sirve para saber la posicion actual de la consulta SQL
     private int limit;
 
     public SellsModel() {
-        this.invSucDAO = new InventarioSucursalDAO();
         this.offset = 0; // iniciamos las consultas SQL en 0 para ir incrementando, asi no tendremos consultar largas suponiendo existan miles de productos
         this.limit = 50;
-        setup();
+//        updateList(CurrentUser.getSalesDepartment(), true, true, true);
     }
 
 
     /**
      * Configura e inicializa el modelo
+     * @return 
      */
-    private void setup() {
-        // configura la vista
-        // obtenemos el listado de todos los productos que pertenecen a CurrentUser.SalesDepartment con limite y offset
-        this.availableProductos = this.invSucDAO.select(CurrentUser.getSalesDepartment(), true, true, true, this.offset, this.limit); // TODO esta linea puede cambiar si la consulta tarda mucho
-        this.offset = this.offset + this.limit;
-    }
+//    public void updateList(Sucursal department, Boolean bySalesDepartment, Boolean useLimit, Boolean useOffset) {
+//            this.availableProductos = this.invSucDAO.select(department, bySalesDepartment, useLimit, useOffset, this.offset, this.limit); // TODO esta linea puede cambiar si la consulta tarda mucho
+//            this.offset = this.offset + this.limit;
+//    }
 
     public int getOffset() {
         return offset;
@@ -55,12 +50,8 @@ public class SellsModel {
         return this.availableProductos;
     }
 
-    public InventarioSucursalDAO getInvSucDAO() {
-        return invSucDAO;
-    }
-
-    public void setInvSucDAO(InventarioSucursalDAO invSucDAO) {
-        this.invSucDAO = invSucDAO;
+    public void setAvailableProductos(ArrayList<InventarioSucursal> availableProductos) {
+        this.availableProductos = availableProductos;
     }
 
     public int getLimit() {

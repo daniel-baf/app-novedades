@@ -44,7 +44,8 @@ public class SellsTable {
                         item.getInventory().getProductoTalla().getSize().getSize(), // la talla
                         item.getInventory().getProductoTalla().getPrice(), // precio normal
                         item.getInventory().getProductoTalla().getSpecialPrice(), // precio clientes especiales
-                        item.getSucursal().getDirection() // la tienda donde se encuentra, en esta ventana solo mostrara items de CurrentUser.SalesDep   
+                        item.getSucursal().getDirection(), // la tienda donde se encuentra, en esta ventana solo mostrara items de CurrentUser.SalesDep   
+                        item.getStock() // la cantidad disponible para venta
                 });
                 // agregamos un sroter para la tabla
                 TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
@@ -66,12 +67,14 @@ public class SellsTable {
      * Carga mas elementos de la base de datos a la tabla con los productos
      * @param view
      * @param model 
+     * @param searchController 
      */
-    public void loadMoreIntoTable(VentaJDialog view, SellsModel model) {
+    public void loadRowsOffsetToTable(VentaJDialog view, SellsModel model, SellsSearchController searchController) {
         try {
             // recibimos la nueva lista
-            model.getAvailableProductos().addAll(new InventarioSucursalDAO().select(CurrentUser.getSalesDepartment(), true, true, true, model.getOffset(), model.getLimit()));
-            model.setOffset(model.getOffset() + model.getLimit());
+            ArrayList<InventarioSucursal> backup = model.getAvailableProductos();
+            searchController.search(view, model, this, false);
+            model.getAvailableProductos().addAll(backup);
             // actualizamos la tabla
             this.addRowsToTable(view, model);
         } catch (Exception e) {
