@@ -17,11 +17,18 @@ import java.sql.SQLException;
  */
 public class InventarioDAO {
 
+    /**
+     * Selecciona elementos de la tabla Inventario en la BD
+     *
+     * @param id el id del inventario
+     * @return un objeto de tipo Inventario si se ha encontrado para el id
+     */
     public Inventario select(int id) {
-        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.INVENTARIO.getSentence() + SQL_SELECT.WHERE +  SQL_SELECT.INVENTARIO_ADD_ID.getSentence())) {
+        // creamos un prepared statement
+        try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.INVENTARIO.getSentence() + SQL_SELECT.WHERE + SQL_SELECT.INVENTARIO_ADD_ID.getSentence())) {
             // configuramos el PS en caso sea por id
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+            ps.setInt(1, id); // configuramos ps
+            ResultSet rs = ps.executeQuery(); // ejecutamos ps
             if (rs.next()) {
                 return getInventarioFromRs(rs);
             }
@@ -31,6 +38,12 @@ public class InventarioDAO {
         return null;
     }
 
+    /**
+     * Crea un objeto de tipo Inventario a partir de un result set
+     *
+     * @param rs resultset
+     * @return el objeto, nulo si ocurre un error
+     */
     private Inventario getInventarioFromRs(ResultSet rs) {
         try {
             Inventario inventarioTmp = new Inventario(rs.getInt("id"), new Color(rs.getString("color")));

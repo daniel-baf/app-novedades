@@ -16,6 +16,13 @@ import java.sql.SQLException;
  */
 public class ProductoTallaDAO {
 
+    /**
+     * Selecciona elementos de la tabla ProductoTalla en la BD
+     *
+     * @param productoId el id del producto
+     * @param talla la talla del producto
+     * @return el elemento encontrado, nulo si no encuentra nada
+     */
     public ProductoTalla select(int productoId, String talla) {
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.PRODUCTO_TALLA.getSentence() + SQL_SELECT.PRODUCTO_TALLA_ADD_ID.getSentence())) {
             ps.setInt(1, productoId);
@@ -31,8 +38,8 @@ public class ProductoTallaDAO {
     /**
      * Genera un objeto de tipo Producto a partir de un Result Set
      *
-     * @param rs
-     * @return
+     * @param rs resultset
+     * @return el objeto obtenido del RS
      */
     private ProductoTalla getProductoFromRS(ResultSet rs) {
         try {

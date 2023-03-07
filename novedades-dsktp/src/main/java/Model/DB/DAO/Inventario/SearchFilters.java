@@ -5,19 +5,18 @@
 package Model.DB.DAO.Inventario;
 
 /**
- *
  * @author mayoneso
  */
 public enum SearchFilters {
-    BY_SIZE ("Talla"),
-    BY_COLOR ("Color"),
-    BY_NAME ("Nombre Pieza"),
-    BY_INV_ID ("ID inventario"),
-    NONE ("NINGUNO");
-    
+    BY_SIZE("Talla"),
+    BY_COLOR("Color"),
+    BY_NAME("Nombre Pieza"),
+    BY_INV_ID("ID inventario"),
+    NONE("NINGUNO");
+
     private final String value;
 
-    private SearchFilters(String value) {
+    SearchFilters(String value) {
         this.value = value;
     }
 

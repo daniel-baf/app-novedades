@@ -22,9 +22,9 @@ public class InventarioSucursalDAO {
     /**
      * Selecciona una lista de inventario por sucursal
      *
-     * @param salesDepartment
-     * @param bySalesDepartment
-     * @return
+     * @param salesDepartment   la tienda a la que se desea filtrar, null si bySalesDeprtment es false
+     * @param bySalesDepartment true si se desea filtrar por tienda
+     * @return la lista de productos disponibles
      */
     public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean bySalesDepartment) {
         return this.select(salesDepartment, bySalesDepartment, false, false, 0, 0);
@@ -33,16 +33,16 @@ public class InventarioSucursalDAO {
     /**
      * Selecciona una lista de inventario por sucursal
      *
-     * @param salesDepartment
-     * @param useOffset
-     * @param useLimit
-     * @param offset
-     * @return
+     * @param salesDepartment la tienda
+     * @param useOffset       true si se desea usar offset en el SQL
+     * @param useLimit        true si se desea usar LIMIT en el SQL
+     * @param offset          el valor del offset en caso useOffset es true
+     * @return el listado de productos encontrados en BD
      */
     public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean useOffset, Boolean useLimit, int offset, int limit) {
         return this.select(salesDepartment, false, useLimit, useOffset, offset, limit);
     }
-    
+
     /**
      * Este metodo busca en la base de datos toda la informacion relacionada a un producto
      * Este metodo puede buscar en todas las tiendas, o en una tienda en especifico
@@ -52,8 +52,8 @@ public class InventarioSucursalDAO {
      * @param bySalesDepartment true si se desea buscar la existencia de una tienda
      * @param useLimit          si se desea poner un limite en el numero de filas por consulta
      * @param useOffset         si se desea mover en la linea de inicio de la consulta
-     * @param offset
-     * @param limit
+     * @param offset            el punto de inicio para la sentencia SQL
+     * @param limit             el limite para la sentencia SQL
      * @return el listado de productos disponibles
      */
     public ArrayList<InventarioSucursal> select(Sucursal salesDepartment, Boolean bySalesDepartment, Boolean useLimit, Boolean useOffset, int offset, int limit) {
@@ -61,10 +61,10 @@ public class InventarioSucursalDAO {
         // modifica el SQL para elegir entre todas las sucursales o una en especifico
         String SQL_TMP = SQL_SELECT.INVENTARIO_SUCURSAL.getSentence();
         // configuramos las consultas extra para usar un mismo metodo para todo
-        SQL_TMP += bySalesDepartment ? SQL_SELECT.WHERE +  SQL_SELECT.INVENTARIO_SUCURSAL_ADD_SUC_ID.getSentence() : "";
+        SQL_TMP += bySalesDepartment ? SQL_SELECT.WHERE + SQL_SELECT.INVENTARIO_SUCURSAL_ADD_SUC_ID.getSentence() : "";
         SQL_TMP += useLimit ? SQL_SENTENCE.LIMIT : "";
         SQL_TMP += useOffset ? SQL_SENTENCE.OFFSET : "";
-        int tmpSQLCounter = 1;
+        int tmpSQLCounter = 1; // CONTADOR para agregar n extras a la sentencia SQL
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_TMP)) {
             // configuramos todos los posibles datos opcionales
             if (bySalesDepartment) ps.setInt(tmpSQLCounter++, salesDepartment.getId());
@@ -80,7 +80,7 @@ public class InventarioSucursalDAO {
         }
         return invAvailability;
     }
-    
+
     /**
      * Obtiene el objeto a partir de un Result Set
      *

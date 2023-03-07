@@ -15,10 +15,16 @@ import java.sql.SQLException;
  */
 public class ProductoDAO {
 
+    /**
+     * Selecciona elementos de la tabla Producto en la BD
+     * @param id el id del producto
+     * @return el producto encontrado, nulo si no encuentra nada
+     */
     public Producto select(int id) {
+        // generamos prepared statement
         try (PreparedStatement ps = DBConnection.getConnection().prepareStatement(SQL_SELECT.PRODUCTO.getSentence() + SQL_SELECT.PRODUCTO_ADD_ID.getSentence())) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+            ps.setInt(1, id); // configuramos ps
+            ResultSet rs = ps.executeQuery(); // ejecutamos ps
             if (rs.next()) return getProductoFromRS(rs);
         } catch (Exception e) {
             System.out.println("No se ha podido seleccionar un producto");
@@ -30,8 +36,8 @@ public class ProductoDAO {
     /**
      * Genera un objeto de tipo Producto a partir de un Result Set
      *
-     * @param rs
-     * @return
+     * @param rs resultset
+     * @return objeto obtenido del rs
      */
     private Producto getProductoFromRS(ResultSet rs) {
         try {

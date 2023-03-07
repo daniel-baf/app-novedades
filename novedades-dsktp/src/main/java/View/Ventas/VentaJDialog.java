@@ -40,7 +40,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         inventoryAddSectionPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        cuantityAddJTextField = new javax.swing.JTextField();
         addToCartJButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         loadMoreJButton = new javax.swing.JButton();
@@ -121,10 +121,10 @@ public class VentaJDialog extends javax.swing.JFrame {
         jLabel1.setText("Cantidad");
         jPanel3.add(jLabel1);
 
-        jTextField1.setText("1");
-        jTextField1.setMinimumSize(new java.awt.Dimension(100, 25));
-        jTextField1.setPreferredSize(new java.awt.Dimension(100, 25));
-        jPanel3.add(jTextField1);
+        cuantityAddJTextField.setText("1");
+        cuantityAddJTextField.setMinimumSize(new java.awt.Dimension(100, 25));
+        cuantityAddJTextField.setPreferredSize(new java.awt.Dimension(100, 25));
+        jPanel3.add(cuantityAddJTextField);
 
         addToCartJButton.setText("AGREGAR");
         jPanel3.add(addToCartJButton);
@@ -298,6 +298,7 @@ public class VentaJDialog extends javax.swing.JFrame {
     public javax.swing.JTable cartlistJTable;
     public javax.swing.JButton checkoutJButton;
     private javax.swing.JPanel containerJPanel;
+    public javax.swing.JTextField cuantityAddJTextField;
     private javax.swing.JPanel inventoryAddSectionPanel;
     private javax.swing.JPanel inventoryListSectionJPanel;
     private javax.swing.JPanel inventorySearchJPanel;
@@ -314,7 +315,6 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    public javax.swing.JTextField jTextField1;
     public javax.swing.JButton loadMoreJButton;
     public javax.swing.JMenu optionsJMenu;
     public javax.swing.JTable productsResultJTable;

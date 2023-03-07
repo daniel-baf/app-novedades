@@ -18,6 +18,11 @@ public class LoginController implements ActionListener {
     private final LoginView view;
     private final LoginModel model;
 
+    /**
+     * Controlador para el login
+     * @param view la vista del login
+     * @param model el modelo con los datos a manipular
+     */
     public LoginController(LoginView view, LoginModel model) {
         this.view = view;
         this.model = model;
@@ -48,6 +53,9 @@ public class LoginController implements ActionListener {
         }
     }
 
+    /**
+     * Borra el mensaje de la pantalla de inicio de sesion
+     */
     private void clearData() {
         this.view.loginMessageJLabel.setText("");
     }
