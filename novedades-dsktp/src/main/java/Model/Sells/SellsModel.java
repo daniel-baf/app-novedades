@@ -1,6 +1,8 @@
 package Model.Sells;
 
 import Model.DB.Domain.Inventario.InventarioSucursal;
+import Model.DB.Domain.Usuario.ClienteEspecial;
+import Model.DB.Domain.Venta.ShoppingCart;
 
 import java.util.ArrayList;
 
@@ -11,7 +13,9 @@ import java.util.ArrayList;
  */
 public class SellsModel {
 
-    ArrayList<InventarioSucursal> availableProductos;
+    private ArrayList<InventarioSucursal> availableProductos;
+    private ShoppingCart cart;
+    private ClienteEspecial specialClient;
 
     private int offset; // sirve para saber la posicion actual de la consulta SQL
     private int limit;
@@ -19,25 +23,8 @@ public class SellsModel {
     public SellsModel() {
         this.offset = 0; // iniciamos las consultas SQL en 0 para ir incrementando, asi no tendremos consultar largas suponiendo existan miles de productos
         this.limit = 50;
-//        updateList(CurrentUser.getSalesDepartment(), true, true, true);
-    }
-
-
-    /**
-     * Configura e inicializa el modelo
-     * @return 
-     */
-//    public void updateList(Sucursal department, Boolean bySalesDepartment, Boolean useLimit, Boolean useOffset) {
-//            this.availableProductos = this.invSucDAO.select(department, bySalesDepartment, useLimit, useOffset, this.offset, this.limit); // TODO esta linea puede cambiar si la consulta tarda mucho
-//            this.offset = this.offset + this.limit;
-//    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
+        this.cart = new ShoppingCart();
+        this.specialClient = null;
     }
 
     /**
@@ -62,4 +49,23 @@ public class SellsModel {
         this.limit = limit;
     }
 
+    public ShoppingCart getCart() {
+        return this.cart;
+    }
+
+    public void setCart(ShoppingCart cart) {
+        this.cart = cart;
+    }
+
+    public ClienteEspecial getSpecialClient() {
+        return specialClient;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setSpecialClient(ClienteEspecial specialClient) {
+        this.specialClient = specialClient;
+    }
 }

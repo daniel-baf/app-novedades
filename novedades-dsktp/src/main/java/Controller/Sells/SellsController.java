@@ -7,6 +7,9 @@ import View.Ventas.VentaJDialog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Esta clase es el controlador para la seccion de las ventas
@@ -17,7 +20,6 @@ public class SellsController implements ActionListener {
 
     // variables
     private final VentaJDialog view;
-    private final SellsModel model;
     private final SellsTableDisplayer sellsTableDisplayerController;
     private final SellsSearchController searchButtonController;
     private final ShoppingCartController cartController;
@@ -25,12 +27,11 @@ public class SellsController implements ActionListener {
     /**
      * Controlador accionador de las ventas, genera los actions listeners y configura los valores en multiples sub controladores
      *
-     * @param view la vista donde desplegar los elementos
+     * @param view  la vista donde desplegar los elementos
      * @param model el modelo que contiene todos los elementos para manipular la visat
      */
     public SellsController(VentaJDialog view, SellsModel model) {
         this.view = view;
-        this.model = model;
         this.sellsTableDisplayerController = new SellsTableDisplayer(view, model);
         this.searchButtonController = new SellsSearchController(view, model);
         this.cartController = new ShoppingCartController(view, model);
@@ -60,6 +61,7 @@ public class SellsController implements ActionListener {
         this.view.loadMoreJButton.addActionListener(this);
         this.view.addToCartJButton.addActionListener(this);
         this.view.searchJButton.addActionListener(this);
+        this.view.specialClientJMenuButton.addActionListener(this);
     }
 
     /**
@@ -69,26 +71,25 @@ public class SellsController implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        // revisamos que boton ha generado el evento
-        if (ae.getSource() == this.view.loadMoreJButton) {
-            this.sellsTableDisplayerController.loadRowsOffsetToProductTable(this.searchButtonController);
-        } else if (ae.getSource() == this.view.searchJButton) {
-            this.searchButtonController.search(this.sellsTableDisplayerController, true);
-        } else if (ae.getSource() == this.view.addToCartJButton) {
-            this.cartController.add();
-        }
+        // generamos un tipo de instruccion por cada elemento
+        Map<Object, Runnable> actions = new HashMap<>();
+        actions.put(this.view.loadMoreJButton, () -> this.sellsTableDisplayerController.loadRowsOffsetToProductTable(this.searchButtonController));
+        actions.put(this.view.searchJButton, () -> this.searchButtonController.search(this.sellsTableDisplayerController, true));
+        actions.put(this.view.addToCartJButton, () -> this.cartController.add(this.sellsTableDisplayerController));
+        actions.put(this.view.specialClientJMenuButton, () -> this.cartController.setupSpecialClient(this.sellsTableDisplayerController));
+        // ejecutamos la accion
+        Runnable action = actions.getOrDefault(ae.getSource(), () -> {
+        });
+        action.run();
     }
 
     /**
-     * Configura los elementos del JComboBox para que los datos para filtrar sean obtenidos a partir de un ENUM
+     * Configuramos todos los elementos que nos interese en la vista
      */
     private void config() {
-        // agregar elementos a select
-        for (SearchFilters item : SearchFilters.values()) {
-            if (item != SearchFilters.NONE) {
-                this.view.searchTypeJComboBox.addItem(item.getValue());
-            }
-        }
+        Arrays.stream(SearchFilters.values()).forEach(item -> {
+            if (item != SearchFilters.NONE) this.view.searchTypeJComboBox.addItem(item.getValue());
+        });
         this.view.searchTypeJComboBox.setSelectedIndex(0);
     }
 

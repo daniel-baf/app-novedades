@@ -4,6 +4,8 @@
  */
 package View.Ventas;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jefe_mayoneso
@@ -54,7 +56,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         checkoutJButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         optionsJMenu = new javax.swing.JMenu();
-        specialClientJMenuButotn = new javax.swing.JMenuItem();
+        specialClientJMenuButton = new javax.swing.JMenuItem();
         sortAllShopsJMenuButotn = new javax.swing.JCheckBoxMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -161,7 +163,7 @@ public class VentaJDialog extends javax.swing.JFrame {
                 .addGroup(inventorySectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventorySectionJPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
+                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE))
                     .addComponent(inventoryListSectionJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -182,14 +184,14 @@ public class VentaJDialog extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID prenda", "Nombre", "Precio", "Cantidad"
+                "ID prenda", "Nombre", "Talla", "Color", "Precio", "Cantidad", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, false, false, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -201,6 +203,10 @@ public class VentaJDialog extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(cartlistJTable);
+        if (cartlistJTable.getColumnModel().getColumnCount() > 0) {
+            cartlistJTable.getColumnModel().getColumn(2).setResizable(false);
+            cartlistJTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         totalJLabel.setText("Total: ");
 
@@ -239,7 +245,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             .addGroup(sellsSectionJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sellsSectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -258,10 +264,10 @@ public class VentaJDialog extends javax.swing.JFrame {
         optionsJMenu.setText("Opciones");
         optionsJMenu.setToolTipText("");
 
-        specialClientJMenuButotn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        specialClientJMenuButotn.setText("Cliente especial");
-        specialClientJMenuButotn.setToolTipText("Ingresa el codigo de cliente especial para descuentos");
-        optionsJMenu.add(specialClientJMenuButotn);
+        specialClientJMenuButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        specialClientJMenuButton.setText("Cliente especial");
+        specialClientJMenuButton.setToolTipText("Ingresa el codigo de cliente especial para descuentos");
+        optionsJMenu.add(specialClientJMenuButton);
 
         sortAllShopsJMenuButotn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         sortAllShopsJMenuButotn.setText("Todas las tiendas");
@@ -283,7 +289,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(containerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(containerJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +330,17 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JPanel sellsSectionJPanel;
     public javax.swing.JCheckBoxMenuItem sortAllShopsJMenuButotn;
     public javax.swing.JLabel specialClientJLabel;
-    public javax.swing.JMenuItem specialClientJMenuButotn;
+    public javax.swing.JMenuItem specialClientJMenuButton;
     public javax.swing.JLabel totalJLabel;
     // End of variables declaration//GEN-END:variables
+
+    // CUSTOM CODE
+    public String showPopUp(String message, String title, int messageType) {
+        String input = JOptionPane.showInputDialog(this, message, title, messageType);
+        if (input != null && !input.isEmpty()) {
+            return input;
+        } else {
+            return "";
+        }
+    }
 }

@@ -12,7 +12,9 @@ import java.sql.SQLException;
 public class DBConnection {
 
     // constantes
-    private final String MYSQl_URL = "jdbc:mysql://localhost:3306/novedades?autoReconnect=true&characterEncoding=UTF-8";
+    private final String SCHEMA = "novedades";
+    private final String IP = "localhost:3306";
+    private final String MYSQl_URL =  String.format("jdbc:mysql://%1$s/%2$s?autoReconnect=true&characterEncoding=UTF-8", IP, SCHEMA);
     private final String MYSQL_USER = "app-usr";
     private final String MYSQL_PASSWORD = "Carro_252525";
     private static Connection connection = null;
@@ -37,4 +39,6 @@ public class DBConnection {
         if (connection == null) new DBConnection();
         return connection;
     }
+
+
 }

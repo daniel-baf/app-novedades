@@ -29,9 +29,4 @@ public class CurrentUser {
         SALES_DEPARTMENT = salesDepartment;
     }
 
-    public static String print() {
-        return "USUARIO ACTUAL\n" + USER.toString() + "\n" + SALES_DEPARTMENT.toString();
-    }
-
-
 }
