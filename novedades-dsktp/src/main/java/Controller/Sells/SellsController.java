@@ -5,6 +5,7 @@ import Model.Sells.SellsModel;
 import View.Ventas.VentaJDialog;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -34,7 +35,7 @@ public class SellsController implements ActionListener {
         this.view = view;
         this.sellsTableDisplayerController = new SellsTableDisplayer(view, model);
         this.searchButtonController = new SellsSearchController(view, model);
-        this.cartController = new ShoppingCartController(view, model);
+        this.cartController = new ShoppingCartController(view, model, this.sellsTableDisplayerController);
         // configuramos los action listeners
         setupActionListeners();
     }
@@ -75,7 +76,7 @@ public class SellsController implements ActionListener {
         Map<Object, Runnable> actions = new HashMap<>();
         actions.put(this.view.loadMoreJButton, () -> this.sellsTableDisplayerController.loadRowsOffsetToProductTable(this.searchButtonController));
         actions.put(this.view.searchJButton, () -> this.searchButtonController.search(this.sellsTableDisplayerController, true));
-        actions.put(this.view.addToCartJButton, () -> this.cartController.add(this.sellsTableDisplayerController));
+        actions.put(this.view.addToCartJButton, this.cartController::add);
         actions.put(this.view.specialClientJMenuButton, () -> this.cartController.setupSpecialClient(this.sellsTableDisplayerController));
         // ejecutamos la accion
         Runnable action = actions.getOrDefault(ae.getSource(), () -> {
@@ -87,6 +88,7 @@ public class SellsController implements ActionListener {
      * Configuramos todos los elementos que nos interese en la vista
      */
     private void config() {
+        // configuramos JComboBox para llenar elementos desd eun ENUM
         Arrays.stream(SearchFilters.values()).forEach(item -> {
             if (item != SearchFilters.NONE) this.view.searchTypeJComboBox.addItem(item.getValue());
         });

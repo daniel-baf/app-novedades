@@ -102,7 +102,7 @@ public class SellsTableDisplayer {
         // mostramos los datos finales
         this.view.cartlistJTable.setModel(model);
         this.addSortKeyToTable(model, this.view.cartlistJTable);
-        this.view.totalJLabel.setText(String.format("Total: Q%1$s",this.model.getCart().getTotal()));
+        this.view.totalJLabel.setText(String.format("Total: Q%1$s", this.model.getCart().getTotal()));
     }
 
     /**
@@ -118,8 +118,11 @@ public class SellsTableDisplayer {
         // Ordenamos por defecto por ID PIEZA
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
         sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING)); // usaremos el Id Pieza para recuperar la info
+        // TODO hacer que se mantenga el sort en la columna que pusieron incluso despues de generar una nueva buscqueda
         sorter.setSortKeys(sortKeys);
         // NOTA: para recuperar el elemento seleccionado si se ha hecho un sort, con el siguiente metodo
         // int selected = this.view.productsResultJTable.convertRowIndexToModel(this.view.productsResultJTable.getSelectedRow());
     }
+
+
 }

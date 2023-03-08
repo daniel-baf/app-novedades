@@ -9,23 +9,29 @@ import javax.swing.*;
 import java.util.Arrays;
 
 /**
+ * Controlador de las acciones relacionadas con la lista de compras
+ *
  * @author jefe_mayoneso
  */
 public class ShoppingCartController {
 
     private final VentaJDialog view;
     private final SellsModel model;
+    private final SellsTableDisplayer displayer;
 
 
-    public ShoppingCartController(VentaJDialog view, SellsModel model) {
+    public ShoppingCartController(VentaJDialog view, SellsModel model, SellsTableDisplayer displayer) {
         this.view = view;
         this.model = model;
+        this.displayer = displayer;
+        // configura el listener de la tabla
+        new ShoppingCartPropertyChangeListener().configCartTable(this.view, this.model, this.displayer);
     }
 
     /**
      * Este metodo agrega elementos a la lista de compras, si el elemento ya existe, aumenta su cantidad, si la cantidad es menor a 1, la ignora,
      */
-    public void add(SellsTableDisplayer displayer) {
+    public void add() {
         try {
             // obtenemos los items seleccionados
             Arrays.stream(view.productsResultJTable.getSelectedRows()).forEach(_index -> this.model.getCart().add(model.getAvailableProductos().get(view.productsResultJTable.convertRowIndexToModel(_index)), Integer.parseInt(view.cuantityAddJTextField.getText())));
@@ -44,11 +50,12 @@ public class ShoppingCartController {
             String result = this.view.showPopUp("Ingresa el codigo del cliente especial: ", "CLIENTE ESPECIAL", JOptionPane.QUESTION_MESSAGE).trim();
             this.model.setSpecialClient(new ClienteEspecialDAO().select(result));
             // actualizamos los datos
-            this.view.specialClientJLabel.setText(this.model.getSpecialClient() != null ? String.format("Cliente especial: %1$s [%2$s]", this.model.getSpecialClient().getName(), this.model.getSpecialClient().getId()): "Cliente especial: ");
+            this.view.specialClientJLabel.setText(this.model.getSpecialClient() != null ? String.format("Cliente especial: %1$s [%2$s]", this.model.getSpecialClient().getName(), this.model.getSpecialClient().getId()) : "Cliente especial: ");
             displayer.displayOnShoppingCartTable(); // siempre actualizamos la tabla
         } catch (Exception e) {
             System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
         }
 
     }
+
 }

@@ -53,16 +53,8 @@ public class SellsModel {
         return this.cart;
     }
 
-    public void setCart(ShoppingCart cart) {
-        this.cart = cart;
-    }
-
     public ClienteEspecial getSpecialClient() {
         return specialClient;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 
     public void setSpecialClient(ClienteEspecial specialClient) {

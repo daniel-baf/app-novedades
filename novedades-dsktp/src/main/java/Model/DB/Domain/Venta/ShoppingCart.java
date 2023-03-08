@@ -50,6 +50,28 @@ public class ShoppingCart {
         return -1;
     }
 
+    /**
+     * Borra un elemento del carrito de compras
+     *
+     * @param item el elemento a eliminar
+     */
+    public void remove(InventarioSucursal item) {
+        // busca el index
+        this.list.remove(this.search(item));
+    }
+
+    /**
+     * Actualiza la cantidad de un elemento
+     * @param item
+     */
+    public void update(CartItem item) {
+        // verificamos que el nuevo valor sea 0
+        if (item.getCuantity() <= 0) this.remove(item.getProduct());
+            // si es al menos 1 elemento el disponible
+        else this.list.get(this.search(item.getProduct())).setCuantity(item.getCuantity());
+    }
+
+
     public void reset() {
         this.list = new ArrayList<>();
     }
@@ -58,9 +80,6 @@ public class ShoppingCart {
         return list;
     }
 
-    public void setList(ArrayList<CartItem> list) {
-        this.list = list;
-    }
 
     public double getTotal() {
         return total;
