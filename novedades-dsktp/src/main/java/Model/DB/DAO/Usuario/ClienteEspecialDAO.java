@@ -36,7 +36,7 @@ public class ClienteEspecialDAO {
      */
     private ClienteEspecial getClienteEspecialFromRS(ResultSet rs) {
         try {
-            return new ClienteEspecial(rs.getString("id"), rs.getString("nombre"));
+            return new ClienteEspecial(rs.getString("id"), rs.getString("nombre"), rs.getString("nit"));
         } catch (Exception e) {
             return null;
         }

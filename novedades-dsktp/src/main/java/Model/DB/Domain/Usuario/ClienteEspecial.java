@@ -5,18 +5,13 @@ package Model.DB.Domain.Usuario;
  *
  * @author jefe_mayoneso
  */
-public class ClienteEspecial {
+public class ClienteEspecial extends Client {
 
     private String id;
-    private String name;
 
-    public ClienteEspecial() {
-        this(null, null);
-    }
-
-    public ClienteEspecial(String id, String name) {
+    public ClienteEspecial(String id, String name, String nit) {
+        super(name, nit);
         this.id = id;
-        this.name = name;
     }
 
     public String getId() {
@@ -27,11 +22,4 @@ public class ClienteEspecial {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

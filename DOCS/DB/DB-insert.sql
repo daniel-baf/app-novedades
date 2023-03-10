@@ -10,10 +10,12 @@ INSERT INTO `novedades`.`Categoria_Gasto` (`gasto`) VALUES
 INSERT INTO `novedades`.`Area` (`id`) VALUES 
 	('administrativo'), ('operativo'), ('ventas');
 
--- USUARIOS ESPECIALES
+-- USUARIOS ESPECIALESDROP TRIGGER IF EXISTS `novedades`.`Detalle_Venta_AFTER_INSERT`;
 
 INSERT INTO `novedades`.`Cliente_Especial` (`id`, `nombre`) VALUES 
 	('esp1', 'Juanita Perez'), ('esp2', 'Pepe Juarez');
+INSERT INTO `novedades`.`Cliente_Especial` (`id`, `nombre`, `nit`) VALUES 
+	('esp3', 'Pepe Hernandez', '45871092');
 
 -- COLOR
 
@@ -106,12 +108,12 @@ INSERT INTO `novedades`.`Conjunto` (`inventario_id_conjunto`, `Inventario_id_pie
 -- STOCK POR TIENDAS
 
  INSERT INTO `novedades`.`Inventario_Sucursal` (`Inventario_id`, `Sucursal_id`, `stock`) VALUES 
- 	(1, 1, 10), (2, 1, 13), (3, 2, 6), (4, 1, 8), (5, 1, 9), 
-    (6, 1, 20), (7, 1, 42), (8, 1, 23), (9, 1, 9), (10, 1, 1), 
-    (11, 1, 23), (12, 1, 5), (13, 1, 8), (14, 1, 0), (15, 1, 7), 
-    (1, 2, 67), (2, 2, 10), (4, 2, 11), (5, 2, 5), (6, 2, 8), 
-    (7, 2, 7), (9, 2, 9), (10, 2, 7), (11, 2, 12), (12, 2, 7),
-	(14, 2, 9), (15, 2, 8);
+ 	(1, 1, 22), (2, 1, 13), (3, 2, 13), (4, 1, 18), (5, 1, 39), 
+    (6, 1, 20), (7, 1, 42), (8, 1, 23), (9, 1, 9), (10, 1, 10), 
+    (11, 1, 23), (12, 1, 15), (13, 1, 26), (14, 1, 0), (15, 1, 17), 
+    (1, 2, 67), (2, 2, 10), (4, 2, 11), (5, 2, 15), (6, 2, 28), 
+    (7, 2, 17), (9, 2, 31), (10, 2, 7), (11, 2, 12), (12, 2, 9),
+	(14, 2, 27), (15, 2, 9);
 
 -- ENVIOS
 
@@ -149,9 +151,11 @@ INSERT INTO `novedades`.`Detalle_Venta` (`Inventario_Sucursal_Inventario_id`, `I
 
 -- desenlistar venta para generar una nueva
 UPDATE `novedades`.`Venta` SET `no_listada` = '1' WHERE (`id` = '1');
+-- datos para simular intercambio
 -- actualizar el inventario
-UPDATE `novedades`.`Inventario_Sucursal` SET `stock` = '11' WHERE (`Inventario_id` = '1') and (`Sucursal_id` = '1'); -- + 1 en inventario
-UPDATE `novedades`.`Inventario_Sucursal` SET `stock` = '12' WHERE (`Inventario_id` = '2') and (`Sucursal_id` = '1'); -- - 1 en inventario
+UPDATE `novedades`.`Inventario_Sucursal` SET `stock` = '22' WHERE (`Inventario_id` = '1') and (`Sucursal_id` = '1'); -- + 1 en inventario
+-- comentamos esta linea porque el trigger lo resta
+-- UPDATE `novedades`.`Inventario_Sucursal` SET `stock` = '12' WHERE (`Inventario_id` = '2') and (`Sucursal_id` = '1'); -- - 1 en inventario
 -- generar cambio
 INSERT INTO `novedades`.`Intercambio` (`fecha`, `Inventario_Sucursal_Inventario_id_cambio`, `Inventario_Sucursal_Sucursal_id_cambio`, `Inventario_Sucursal_Inventario_id_viejo`, `Inventario_Sucursal_Sucursal_id_viejo`, `Venta_id`) VALUES
 	('2022-10-13', '1', '1', '2', '1', '1');

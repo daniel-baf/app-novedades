@@ -65,6 +65,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         specialClientJLabel = new javax.swing.JLabel();
         nitJLabel = new javax.swing.JLabel();
+        nameJLabel = new javax.swing.JLabel();
         totalJLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         checkoutJButton = new javax.swing.JButton();
@@ -177,7 +178,7 @@ public class VentaJDialog extends javax.swing.JFrame {
                 .addGroup(inventorySectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventorySectionJPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE))
+                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
                     .addComponent(inventoryListSectionJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -222,13 +223,16 @@ public class VentaJDialog extends javax.swing.JFrame {
             cartlistJTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        jPanel6.setLayout(new java.awt.GridLayout(3, 1, 1, 0));
+        jPanel6.setLayout(new java.awt.GridLayout(4, 1, 1, 0));
 
         specialClientJLabel.setText("Cliene especial: ");
         jPanel6.add(specialClientJLabel);
 
         nitJLabel.setText("NIT: ");
         jPanel6.add(nitJLabel);
+
+        nameJLabel.setText("Nombre: ");
+        jPanel6.add(nameJLabel);
 
         totalJLabel.setText("Total: ");
         jPanel6.add(totalJLabel);
@@ -259,7 +263,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             .addGroup(sellsSectionJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sellsSectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -338,6 +342,7 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JButton loadMoreJButton;
+    public javax.swing.JLabel nameJLabel;
     public javax.swing.JLabel nitJLabel;
     public javax.swing.JMenu optionsJMenu;
     public javax.swing.JTable productsResultJTable;
@@ -355,18 +360,22 @@ public class VentaJDialog extends javax.swing.JFrame {
     /**
      * Muestra un mensaje emerjente y devuelve el valor ingresado
      *
-     * @param message
-     * @param title
-     * @param messageType
+     * @param message el emnsaje a mostrar
+     * @param title el titulo del popup
+     * @param messageType el tipo de me
      * @return
      */
-    public String showPopUp(String message, String title, int messageType) {
+    public String showInputPopUp(String message, String title, int messageType) {
         String input = JOptionPane.showInputDialog(this, message, title, messageType);
         if (input != null && !input.isEmpty()) {
             return input;
         } else {
             return "";
         }
+    }
+
+    public void showPopUp(String message, String title, int messageType) {
+        JOptionPane.showMessageDialog(this, message, title, messageType);
     }
 
     /**
@@ -455,24 +464,37 @@ public class VentaJDialog extends javax.swing.JFrame {
 
     /**
      * COnfigura el NIT para la generacion de la venta
-     * @return 
+     *
+     * @return
      */
-    public String displayNit() {
+    public String setupNIT() {
         // obtenemos el valor
-        String nit = this.showPopUp("Ingresa el NIT del ususario", "NIT", JOptionPane.QUESTION_MESSAGE).trim();
-
+        String nit = this.showInputPopUp("Ingresa el NIT para la factura", "NIT", JOptionPane.QUESTION_MESSAGE).trim().toLowerCase();
         try {
             // actualizamos nit en caso de error
-            nit = nit.isBlank() || nit.isEmpty()? "CF": nit;
-            if (!nit.matches("[0-9]+")) { // solo aceptamos numeros en el nit
-                this.showPopUp("NIT INVALIDO", "NIT", JOptionPane.ERROR_MESSAGE);
+            nit = nit.isBlank() || nit.isEmpty() ? "CF" : nit;
+            if (!nit.matches("[0-9]+|(cf)")) { // solo aceptamos numeros en el nit
+                this.showPopUp("NIT INVALIDO", "NIT", JOptionPane.WARNING_MESSAGE);
+                nit = "CF";
             }
             // actualizamos la vista
             this.nitJLabel.setText(String.format("NIT: %1$s", nit));
         } catch (Exception e) {
             System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
         }
-        return nit;        
+        return nit;
     }
-    
+
+    public void displayBillData(String nit, String name, ClienteEspecial specialClient) {
+        this.specialClientJLabel.setText(specialClient != null ? String.format("Cliente especial: CODIGO[%2$s]", specialClient.getName(), specialClient.getId()) : "Cliente especial: ");
+        this.nitJLabel.setText(String.format("NIT: %1$s",nit));
+        this.nameJLabel.setText(String.format("Nombre: %1$s", name));
+    }
+
+    public String setupUserBillName() {
+        String name = this.showInputPopUp("Ingresa el nombre para la factura", "NOMBRE", JOptionPane.QUESTION_MESSAGE).trim();
+        this.nameJLabel.setText("Nombre: " + name);
+        return name;
+    }
+
 }

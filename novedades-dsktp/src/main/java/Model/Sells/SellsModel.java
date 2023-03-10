@@ -13,12 +13,12 @@ import java.util.ArrayList;
  */
 public class SellsModel {
 
-    private ArrayList<InventarioSucursal> availableProductos;
     private final ShoppingCart cart;
+    private final int offset; // sirve para saber la posicion actual de la consulta SQL
+    private ArrayList<InventarioSucursal> availableProductos;
     private ClienteEspecial specialClient;
     private String NIT;
-
-    private final int offset; // sirve para saber la posicion actual de la consulta SQL
+    private String billName;
     private int limit;
 
     public SellsModel() {
@@ -27,6 +27,7 @@ public class SellsModel {
         this.cart = new ShoppingCart();
         this.specialClient = null;
         this.NIT = "CF";
+        this.billName = "";
     }
 
     /**
@@ -69,5 +70,17 @@ public class SellsModel {
 
     public void setNIT(String NIT) {
         this.NIT = NIT;
+    }
+
+    public String getBillName() {
+        return billName;
+    }
+
+    public void setBillName(String billName) {
+        this.billName = billName;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 }

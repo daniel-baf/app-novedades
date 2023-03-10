@@ -106,7 +106,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="inventorySearchJPanel" pref="555" max="32767" attributes="0"/>
+                              <Component id="inventorySearchJPanel" pref="542" max="32767" attributes="0"/>
                           </Group>
                           <Component id="inventoryListSectionJPanel" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -352,7 +352,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel5" pref="320" max="32767" attributes="0"/>
+                          <Component id="jPanel5" pref="311" max="32767" attributes="0"/>
                           <Component id="jPanel2" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -467,7 +467,7 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="1"/>
                     <Property name="horizontalGap" type="int" value="1"/>
-                    <Property name="rows" type="int" value="3"/>
+                    <Property name="rows" type="int" value="4"/>
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="specialClientJLabel">
@@ -481,6 +481,14 @@
                     <Component class="javax.swing.JLabel" name="nitJLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="NIT: "/>
+                      </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="nameJLabel">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Nombre: "/>
                       </Properties>
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

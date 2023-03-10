@@ -5,7 +5,6 @@ import Model.Sells.SellsModel;
 import View.Ventas.VentaJDialog;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ public class SellsController implements ActionListener {
     private final SellsTableDisplayer sellsTableDisplayerController;
     private final SellsSearchController searchButtonController;
     private final ShoppingCartController cartController;
+    private final BillController billController;
 
     /**
      * Controlador accionador de las ventas, genera los actions listeners y configura los valores en multiples sub controladores
@@ -36,6 +36,7 @@ public class SellsController implements ActionListener {
         this.sellsTableDisplayerController = new SellsTableDisplayer(view, model);
         this.searchButtonController = new SellsSearchController(view, model);
         this.cartController = new ShoppingCartController(view, model, this.sellsTableDisplayerController);
+        this.billController = new BillController(model, this.view);
         // configuramos los action listeners
         setupActionListeners();
     }
@@ -64,6 +65,7 @@ public class SellsController implements ActionListener {
         this.view.searchJButton.addActionListener(this);
         this.view.specialClientJMenuButton.addActionListener(this);
         this.view.insertNitJMenuItem.addActionListener(this);
+        this.view.checkoutJButton.addActionListener(this);
     }
 
     /**
@@ -80,6 +82,7 @@ public class SellsController implements ActionListener {
         actions.put(this.view.addToCartJButton, this.cartController::add);
         actions.put(this.view.specialClientJMenuButton, () -> this.cartController.setupSpecialClient(this.sellsTableDisplayerController));
         actions.put(this.view.insertNitJMenuItem, this.cartController::setupNit);
+        actions.put(this.view.checkoutJButton, this.billController::create);
         // ejecutamos la accion
         Runnable action = actions.getOrDefault(ae.getSource(), () -> {
         });

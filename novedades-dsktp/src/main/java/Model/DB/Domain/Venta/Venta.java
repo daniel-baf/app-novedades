@@ -1,4 +1,4 @@
-package Model.DB.DAO.Venta;
+package Model.DB.Domain.Venta;
 
 import Model.DB.Domain.Usuario.ClienteEspecial;
 import Model.DB.Domain.Usuario.Usuario;
@@ -25,6 +25,10 @@ public class Venta {
     private boolean isListed;
 
     public Venta() {
+    }
+
+    public Venta(LocalDate date, String nit, String name, double total, Usuario user, ClienteEspecial specialClient, boolean isListed) {
+        this(-1, date, nit, name, total, user, specialClient, isListed);
     }
 
     public Venta(int id, LocalDate date, String nit, String name, double total, Usuario user, ClienteEspecial specialClient, boolean isListed) {

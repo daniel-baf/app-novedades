@@ -39,6 +39,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Cliente_Especial` (
   `id` VARCHAR(10) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
+  `nit` VARCHAR(10) NOT NULL DEFAULT 'CF',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -415,6 +416,45 @@ BEGIN
     END IF;
 END$$
 
+DELIMITER ;
+
+USE `novedades`;
+
+DELIMITER ;
+DROP TRIGGER IF EXISTS `novedades`.`Detalle_Venta_BEFORE_INSERT`;
+
+DELIMITER $$
+USE `novedades`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Detalle_Venta_BEFORE_INSERT` BEFORE INSERT ON `Detalle_Venta` FOR EACH ROW
+BEGIN
+	-- antes de insertar debe revisar que haya stock
+    DECLARE stock_tmp INT;
+    DECLARE MSG VARCHAR(100);
+    SELECT `stock` INTO stock_tmp FROM `Inventario_Sucursal` WHERE `Inventario_id` = new.`Inventario_Sucursal_Inventario_id` 
+		AND `Sucursal_id` = new.`Inventario_Sucursal_Sucursal_id`;
+	SELECT CONCAT('La proporcion solicitud/stock es de: [',  new.`cantidad`,  '/ ', stock_tmp, ']') into MSG;
+    IF(stock_tmp = 0 OR stock_tmp < new.`cantidad`) THEN
+		 -- error
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = MSG;
+	END IF;
+END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS `novedades`.`Detalle_Venta_AFTER_INSERT`;
+
+DELIMITER $$
+USE `novedades`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `novedades`.`Detalle_Venta_AFTER_INSERT` AFTER INSERT ON `Detalle_Venta` FOR EACH ROW
+BEGIN
+	-- recuperamos el valor de los datos
+    DECLARE current_stock INT;
+    SELECT `stock` INTO current_stock FROM `Inventario_Sucursal` WHERE `Inventario_id` = new.`Inventario_Sucursal_Inventario_id` 
+		AND `Sucursal_id` = new.`Inventario_Sucursal_Sucursal_id`;
+	-- reducimos el stock
+    UPDATE `novedades`.`Inventario_Sucursal` SET `stock` = (current_stock - new.`cantidad`) 
+		WHERE `Inventario_id` = new.`Inventario_Sucursal_Inventario_id` 
+			AND `Sucursal_id` = new.`Inventario_Sucursal_Sucursal_id`;
+END$$
 DELIMITER ;
 
 -- configuración de usuario que solo tendrá acceso a la BD que se creará
