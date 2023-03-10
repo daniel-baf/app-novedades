@@ -16,8 +16,10 @@ public class Usuario {
     private String area;
 
     public Usuario() {
-        this(null, null, null, null, false);
+        this(null);
     }
+
+    public Usuario(String usuario) { this(usuario, null, null, null, false); }
 
     public Usuario(String usuario, String password, boolean encrypt) {
         this(usuario, null, password, null, encrypt);

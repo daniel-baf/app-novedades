@@ -6,6 +6,7 @@ package Model.DB.DAO.SQL;
  * @author colaborativo
  */
 public enum SQL_INSERT implements SQL_SENTENCE{
+    SELL("INSERT INTO `novedades`.`Detalle_Venta` (`Inventario_Sucursal_Sucursal_id`, `Venta_id`, `cantidad`, `precio_unitario`, `subtotal`) VALUES (?, ?, ?, ?, ?) "),
     USER("INSERT INTO `novedades`.`Usuario` (`id`, `nombre`, `password`, `Area_id`) VALUES (?, ?, ?, ?) "),
     AREA("INSERT INTO `novedades`.`Area` (`id`) VALUES (?) ");
 

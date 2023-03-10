@@ -63,6 +63,7 @@ public class SellsController implements ActionListener {
         this.view.addToCartJButton.addActionListener(this);
         this.view.searchJButton.addActionListener(this);
         this.view.specialClientJMenuButton.addActionListener(this);
+        this.view.insertNitJMenuItem.addActionListener(this);
     }
 
     /**
@@ -78,6 +79,7 @@ public class SellsController implements ActionListener {
         actions.put(this.view.searchJButton, () -> this.searchButtonController.search(this.sellsTableDisplayerController, true));
         actions.put(this.view.addToCartJButton, this.cartController::add);
         actions.put(this.view.specialClientJMenuButton, () -> this.cartController.setupSpecialClient(this.sellsTableDisplayerController));
+        actions.put(this.view.insertNitJMenuItem, this.cartController::setupNit);
         // ejecutamos la accion
         Runnable action = actions.getOrDefault(ae.getSource(), () -> {
         });

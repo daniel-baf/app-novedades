@@ -58,4 +58,10 @@ public class ShoppingCartController {
 
     }
 
+    /**
+     * Configura el NIT para la venta
+     */
+    public void setupNit() {
+        this.model.setNIT(this.view.displayNit());
+    }
 }

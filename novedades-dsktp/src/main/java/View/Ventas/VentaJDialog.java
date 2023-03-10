@@ -4,7 +4,19 @@
  */
 package View.Ventas;
 
+import Model.DB.Domain.Inventario.InventarioSucursal;
+import Model.DB.Domain.Usuario.ClienteEspecial;
+import Model.DB.Domain.Venta.CartItem;
+import Model.DB.Domain.Venta.ShoppingCart;
+import Utils.CustomException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -50,8 +62,10 @@ public class VentaJDialog extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         cartlistJTable = new javax.swing.JTable();
-        totalJLabel = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         specialClientJLabel = new javax.swing.JLabel();
+        nitJLabel = new javax.swing.JLabel();
+        totalJLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         checkoutJButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -59,7 +73,7 @@ public class VentaJDialog extends javax.swing.JFrame {
         specialClientJMenuButton = new javax.swing.JMenuItem();
         sortAllShopsJMenuButotn = new javax.swing.JCheckBoxMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        insertNitJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,7 +128,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -163,7 +177,7 @@ public class VentaJDialog extends javax.swing.JFrame {
                 .addGroup(inventorySectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inventorySectionJPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE))
+                        .addComponent(inventorySearchJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE))
                     .addComponent(inventoryListSectionJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -208,31 +222,31 @@ public class VentaJDialog extends javax.swing.JFrame {
             cartlistJTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        totalJLabel.setText("Total: ");
+        jPanel6.setLayout(new java.awt.GridLayout(3, 1, 1, 0));
 
         specialClientJLabel.setText("Cliene especial: ");
+        jPanel6.add(specialClientJLabel);
+
+        nitJLabel.setText("NIT: ");
+        jPanel6.add(nitJLabel);
+
+        totalJLabel.setText("Total: ");
+        jPanel6.add(totalJLabel);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(totalJLabel)
-                    .addComponent(specialClientJLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalJLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(specialClientJLabel)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         checkoutJButton.setText("PROCEDER VENTA");
@@ -245,7 +259,7 @@ public class VentaJDialog extends javax.swing.JFrame {
             .addGroup(sellsSectionJPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sellsSectionJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -276,10 +290,11 @@ public class VentaJDialog extends javax.swing.JFrame {
 
         jMenuBar1.add(optionsJMenu);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Venta");
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenu2.add(jMenuItem1);
+        insertNitJMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        insertNitJMenuItem.setText("NIT");
+        jMenu2.add(insertNitJMenuItem);
 
         jMenuBar1.add(jMenu2);
 
@@ -305,6 +320,7 @@ public class VentaJDialog extends javax.swing.JFrame {
     public javax.swing.JButton checkoutJButton;
     private javax.swing.JPanel containerJPanel;
     public javax.swing.JTextField cuantityAddJTextField;
+    public javax.swing.JMenuItem insertNitJMenuItem;
     private javax.swing.JPanel inventoryAddSectionPanel;
     private javax.swing.JPanel inventoryListSectionJPanel;
     private javax.swing.JPanel inventorySearchJPanel;
@@ -313,15 +329,16 @@ public class VentaJDialog extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JButton loadMoreJButton;
+    public javax.swing.JLabel nitJLabel;
     public javax.swing.JMenu optionsJMenu;
     public javax.swing.JTable productsResultJTable;
     public javax.swing.JButton searchJButton;
@@ -335,6 +352,14 @@ public class VentaJDialog extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     // CUSTOM CODE
+    /**
+     * Muestra un mensaje emerjente y devuelve el valor ingresado
+     *
+     * @param message
+     * @param title
+     * @param messageType
+     * @return
+     */
     public String showPopUp(String message, String title, int messageType) {
         String input = JOptionPane.showInputDialog(this, message, title, messageType);
         if (input != null && !input.isEmpty()) {
@@ -343,4 +368,111 @@ public class VentaJDialog extends javax.swing.JFrame {
             return "";
         }
     }
+
+    /**
+     * Muestra productos en la tabla de productos
+     *
+     * @param items
+     */
+    public void displayProducts(ArrayList<InventarioSucursal> items) {
+        DefaultTableModel model = (DefaultTableModel) this.productsResultJTable.getModel();
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        // configuramos la tabla por cada consulta nueva
+        items.forEach(_item -> {
+            try { // agregamos los elementos en la vista
+                model.addRow(new Object[]{
+                    _item.getInventory().getId(), // id del inventario, identifica la pieza, talla y color
+                    _item.getInventory().getColor().getColor(), // color
+                    _item.getInventory().getProductoTalla().getProduct().getName(), // el nombre de la pieza
+                    _item.getInventory().getProductoTalla().getSize().getSize(), // la talla
+                    _item.getInventory().getProductoTalla().getPrice(), // precio normal
+                    _item.getInventory().getProductoTalla().getSpecialPrice(), // precio clientes especiales
+                    _item.getSucursal().getDirection(), // la tienda donde se encuentra, en esta ventana solo mostrara items de CurrentUser.SalesDep
+                    _item.getStock() // la cantidad disponible para venta
+                });
+            } catch (Exception e) {
+                // TODO display error on CONSOLE
+                System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
+            }
+        });
+        // actualizamos la tabla
+        this.productsResultJTable.setModel(model); // actualizamos el modelo
+        this.addSortKeyToTable(model, this.productsResultJTable); // agregamos sortkey para que se pueda filtrar la tabla
+    }
+
+    /**
+     * COnfigura un SortKey para una tabla a partir d eun tableModel
+     *
+     * @param tableModel el modelo al que queremos agregar sortkey
+     * @param table la tabla a la que se le pondra el sortkey
+     */
+    private void addSortKeyToTable(DefaultTableModel tableModel, JTable table) {
+        // agregamos un sroter para la tabla
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
+        // Ordenamos por defecto por ID PIEZA
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING)); // usaremos el Id Pieza para recuperar la info
+        // TODO hacer que se mantenga el sort en la columna que pusieron incluso despues de generar una nueva buscqueda
+        sorter.setSortKeys(sortKeys);
+        // NOTA: para recuperar el elemento seleccionado si se ha hecho un sort, con el siguiente metodo
+        // int selected = this.view.productsResultJTable.convertRowIndexToModel(this.view.productsResultJTable.getSelectedRow());
+    }
+
+    /**
+     * Este metodo muestra en la tabla de lista de compra los productos
+     * mostrados
+     */
+    public void displayOnShoppingCartTable(ArrayList<CartItem> items, ClienteEspecial specialCLient, ShoppingCart cart) {
+        DefaultTableModel model = (DefaultTableModel) this.cartlistJTable.getModel();
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        // mostramos los datos que estan en el carrito de compras
+        items.forEach(_item -> {
+            try { // agregamos el elemento
+                double tmpPrice = specialCLient != null ? _item.getProduct().getInventory().getProductoTalla().getSpecialPrice() : _item.getProduct().getInventory().getProductoTalla().getPrice();
+                cart.setTotal(cart.getTotal() + tmpPrice * _item.getCuantity());
+                // actualizamos total
+                model.addRow(new Object[]{
+                    _item.getProduct().getInventory().getId(),
+                    _item.getProduct().getInventory().getProductoTalla().getProduct().getName(),
+                    _item.getProduct().getInventory().getProductoTalla().getSize().getSize(),
+                    _item.getProduct().getInventory().getColor().getColor(),
+                    tmpPrice,
+                    _item.getCuantity(),
+                    _item.getCuantity() * tmpPrice
+                });
+            } catch (Exception e) {
+                System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
+            }
+        });
+        // mostramos los datos finales
+        this.cartlistJTable.setModel(model);
+        this.addSortKeyToTable(model, this.cartlistJTable);
+        this.totalJLabel.setText(String.format("Total: Q%1$s", cart.getTotal()));
+    }
+
+    /**
+     * COnfigura el NIT para la generacion de la venta
+     * @return 
+     */
+    public String displayNit() {
+        // obtenemos el valor
+        String nit = this.showPopUp("Ingresa el NIT del ususario", "NIT", JOptionPane.QUESTION_MESSAGE).trim();
+
+        try {
+            // actualizamos nit en caso de error
+            nit = nit.isBlank() || nit.isEmpty()? "CF": nit;
+            if (!nit.matches("[0-9]+")) { // solo aceptamos numeros en el nit
+                this.showPopUp("NIT INVALIDO", "NIT", JOptionPane.ERROR_MESSAGE);
+            }
+            // actualizamos la vista
+            this.nitJLabel.setText(String.format("NIT: %1$s", nit));
+        } catch (Exception e) {
+            System.out.println(CustomException.formatError(e.getMessage(), this.getClass()));
+        }
+        return nit;        
+    }
+    
 }
